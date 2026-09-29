@@ -1,10 +1,19 @@
 {
   "id": "pn.pack.mansion",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "type": "world",
   "installPolicy": "optional",
   "platforms": ["web", "windows", "android"],
   "dependencies": ["pn.pack.core"],
-  "assets": [],
-  "notes": "Mansion world pack. Source assets remain outside the repository until cleared for redistribution."
+  "assets": [
+    {
+      "id": "pn.test.content.triangle",
+      "path": "test-model.gltf",
+      "type": "model",
+      "redistributable": true,
+      "licenceRef": "PROJECT-NIGHTMARE-ORIGINAL-TEST",
+      "sha256": "development-test-asset"
+    }
+  ],
+  "notes": "Contains the first original local test model used to verify pack mounting and GLTF resolution."
 }

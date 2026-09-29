@@ -4,79 +4,44 @@
 
 **Asset-pack implementation commit:** `0a2df6a0b3f399c5bc225b694713685bc66ac361`
 
-**Current main recovery head:** `41b77b27f85e72b7837e49276373f2d047311592`
+**Current phase:** Content Manager Integration — IN PROGRESS
 
-## Current phase
-### Asset Pack Foundation — IMPLEMENTED
+## Completed this phase
+- Content manager imported by the Mansion bootstrap.
+- Core and Mansion logical packs are mounted during Mansion startup.
+- Stable asset ID resolution is now connected to the renderer.
+- Added an original, self-contained local GLTF triangle test asset.
+- The sandbox startup waits on the content pipeline through `runtime.ready`.
+- Non-redistributable assets remain blocked by the content manager.
 
-The project now has a platform-neutral content-pack contract for core content, optional world content, platform-specific content and future DLC.
-
-## Added
-
-- data/assets/asset-pack-schema.json — pack metadata contract and redistribution gate.
-- data/assets/asset-catalog.json — logical pack catalogue.
-- data/assets/packs/core.json — core placeholder.
-- data/assets/packs/mansion.json — Mansion placeholder.
-- data/assets/packs/android.json — Android placeholder.
-- js/engine/content/content-manager.js — catalogue loading, dependency mounting and asset-ID resolution.
-- assets/packs/README.md — master-library to release-pack workflow.
-- This handover record.
-
-## Architecture decision
-
-The engine references asset IDs, never developer hard-drive paths.
-
-Example: pn.mansion.prop.cctv_01
-
-That ID can eventually resolve to a browser folder, Windows package, Android Play Asset Pack or another backend without changing gameplay code.
-
-Android supports install-time, fast-follow and on-demand asset packs; Steam uses separately delivered/mounted depots and DLC depots.
-
-## Hard-drive workflow
-
-Master: D:\ProjectNightmare\AssetLibrary\
-Working: D:\ProjectNightmare\AssetBuild\
-
-DOWNLOAD -> MASTER -> LICENCE CHECK -> STAGE -> OPTIMISE -> VALIDATE -> BUILD PACK -> RELEASE
-
-## Status
-
+## Current status
 - [x] Logical pack architecture
 - [x] Asset-pack manifest schema
 - [x] Pack catalogue
 - [x] Browser content manager foundation
 - [x] Core/Mansion/Android pack placeholders
-- [x] Licence gate in content resolution
+- [x] Content manager wired into Mansion bootstrap
+- [x] Local GLTF pack-resolution test asset
 - [x] Crash-safe handover record
-- [x] Changes committed to `main`
-- [ ] Connect content manager to live Mansion renderer
-- [ ] Add cleared GLB/texture/audio assets
-- [ ] Add SHA-256 build validation
-- [ ] Add browser pack import/build tooling
-- [ ] Add Android build wrapper / Play Asset Delivery mapping
-- [ ] Add Windows release packaging
-- [ ] Add DLC entitlement/ownership layer
-- [ ] Test physical Android hardware
-- [ ] Test low-memory Android behaviour
+- [ ] Browser pack import/build tooling
+- [ ] SHA-256 build validation
+- [ ] Android build wrapper / Play Asset Delivery mapping
+- [ ] Windows release packaging
+- [ ] DLC entitlement/ownership layer
+- [ ] Physical Android compatibility test
+- [ ] Low-memory Android test
 
 ## Known limitations / errors
-
-1. Browser code cannot silently read arbitrary hard-drive folders. Files must be explicitly selected/imported or supplied by a desktop/native pipeline.
-2. Packs intentionally contain no external assets yet, preventing accidental redistribution of uncleared content.
-3. Content manager is not yet wired into mansion-bootstrap.js.
-4. Android compatibility is not yet verified on physical hardware.
-5. Three.js is still a jsDelivr development import; release should vendor/pin it and retain the MIT notice.
+1. Browser code cannot silently read arbitrary hard-drive folders; files must be explicitly selected/imported or supplied by a desktop/native pipeline.
+2. The local test model is GLTF rather than binary GLB so it remains reviewable in source control; it is original and contains an embedded 36-byte triangle buffer.
+3. The browser prototype has not yet been exercised on physical Android hardware.
+4. Three.js remains a jsDelivr development import; release should vendor/pin it and retain the MIT notice.
+5. The content manager currently resolves browser URLs. Native Android delivery will need a platform adapter that maps the same pack IDs to Play Asset Delivery locations.
 
 ## Exact resume point after a crash
+NEXT STEP: add the browser pack import/build tooling, including explicit folder/file selection, manifest validation, redistribution checks and SHA-256 generation. Then map the logical Android pack names to Play Asset Delivery configuration.
 
-NEXT STEP: integrate js/engine/content/content-manager.js into mansion-bootstrap.js, mount pn.pack.core and pn.pack.mansion, then add one known-safe local test GLB through the pack resolver.
-
-After that:
-1. Add pack import/build tooling.
-2. Add licence validation and SHA-256 checks.
-3. Begin Android compatibility pass.
-4. Do not add third-party assets to release packs until redistribution status is recorded.
+Android's current documentation defines install-time, fast-follow and on-demand asset pack delivery, and says downloaded pack locations should be checked on every launch rather than cached between launches. citeturn0search1turn0search4
 
 ## Recovery rule
-
 At the end of every substantial build phase update this file with phase/status, commits, completed work, known errors and the exact next step. Never leave an unfinished phase undocumented.
