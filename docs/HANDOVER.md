@@ -345,3 +345,23 @@ Merge this Sandbox rebuild to main, then open GitHub Pages and test:
 6. RESET VIEW;
 7. fullscreen;
 8. Dashboard navigation.
+
+## Build log — 2026-09-29 — Sandbox boot correction
+
+**Phase:** Virtual Sandbox / 3D Environment Proving Ground — BOOT FIX APPLIED
+
+### Root cause found
+The Sandbox HTML module contained an invalid JavaScript expression in the POWER CYCLE handler: `powerOn?.68:.12`. Because the module could not parse, the page shell rendered but the Three.js boot sequence never executed.
+
+### Corrected
+- Replaced the invalid expression with `powerOn ? .68 : .12`.
+- The existing `getPlatformProfile()` export fix remains in place.
+- The Sandbox should now be able to parse and enter the renderer boot sequence after a hard refresh.
+
+**Commit:** b0ff9cf4b5c80d820a372f5669d9a010f2408228
+
+### Current user verification
+The user reports the Sandbox screen appears but the world does not load. This syntax error has now been identified and corrected. The shared navigation tabs also visually light up but are not yet considered fully functional; they remain a separate UI wiring task.
+
+### Exact next step
+Hard-refresh the Sandbox and verify: WORLD ONLINE, visible 3D mansion, WASD/mouse movement, then GENERATE WORLD / NIGHTMARE / POWER CYCLE. After that, wire and test every navigation tab end-to-end.
