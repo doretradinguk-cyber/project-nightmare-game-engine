@@ -9,7 +9,7 @@
 <body data-page="sandbox">
 <main class="nightmare-shell sandbox-view">
 <header class="nightmare-header">
-<small>PROJECT NIGHTMARE // ENVIRONMENT LAB</small><h1>👁️ VIRTUAL SANDBOX</h1>
+<small>PROJECT NIGHTMARE // ENVIRONMENT LAB</small><h1><span class="heading-sentinel-pair" aria-hidden="true"><span class="heading-sentinel-eye"><img src="../assets/props/nightmare-eye.svg" alt=""></span><span class="heading-sentinel-eye"><img src="../assets/props/nightmare-eye.svg" alt=""></span></span>👁️ VIRTUAL SANDBOX</h1>
 <p>THE LIVING MANSION // PROCEDURAL 3D PROVING GROUND</p>
 <nav class="nightmare-nav"><a href="../index.html">🏠 DASHBOARD</a><a href="sprite-matrix.html">👾 SPRITE MATRIX</a><a href="game-console.html">🎮 GAME CONSOLE</a><a href="voice-scripting.html">🎙️ VOICE SCRIPTING</a><a href="database-admin.html">🗄️ DATABASE &amp; ADMIN</a><a href="dev.html">🛠️ DEV LAB</a><a class="active" href="sandbox.html">👁️ VIRTUAL SANDBOX</a></nav>
 </header>
@@ -40,9 +40,15 @@ import { bootMansion } from '../js/engine/mansion-bootstrap.js';
 import { SandboxExperience } from '../js/engine/sandbox-experience.js';
 const $=id=>document.getElementById(id); let runtime=null,effect=null,powerOn=true,last=performance.now(),frames=0,fps=0;
 const uiEyes=[$('uiEyeLeft'),$('uiEyeRight')];
+const headingEyes=[...document.querySelectorAll('.heading-sentinel-eye')];
 window.addEventListener('mousemove',e=>{
  const x=(e.clientX/window.innerWidth-.5)*2, y=(e.clientY/window.innerHeight-.5)*2;
  uiEyes.forEach(eye=>{
+   const max=5;
+   eye.style.setProperty('--pupil-x',(x*max)+'px');
+   eye.style.setProperty('--pupil-y',(y*max)+'px');
+ });
+ headingEyes.forEach(eye=>{
    const max=5;
    eye.style.setProperty('--pupil-x',(x*max)+'px');
    eye.style.setProperty('--pupil-y',(y*max)+'px');
