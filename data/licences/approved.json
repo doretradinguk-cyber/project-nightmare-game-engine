@@ -1,0 +1,23 @@
+{
+  "PROJECT-NIGHTMARE-ORIGINAL": {
+    "name": "Project Nightmare Original",
+    "redistributable": true,
+    "commercialUse": true,
+    "attributionRequired": false,
+    "notes": "Use only for assets created by Dore Trading UK / Project Nightmare."
+  },
+  "PROJECT-NIGHTMARE-ORIGINAL-TEST": {
+    "name": "Project Nightmare Original Test Asset",
+    "redistributable": true,
+    "commercialUse": true,
+    "attributionRequired": false,
+    "notes": "Original development test asset."
+  },
+  "THREEJS-MIT": {
+    "name": "Three.js MIT",
+    "redistributable": true,
+    "commercialUse": true,
+    "attributionRequired": true,
+    "notes": "Retain the Three.js MIT licence notice in releases."
+  }
+}

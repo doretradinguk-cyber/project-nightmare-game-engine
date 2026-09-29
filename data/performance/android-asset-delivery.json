@@ -1,0 +1,25 @@
+{
+  "schemaVersion": 1,
+  "platform": "android",
+  "provider": "Google Play Asset Delivery",
+  "logicalToAndroid": {
+    "pn.pack.core": {
+      "androidPackName": "core",
+      "deliveryType": "install-time"
+    },
+    "pn.pack.mansion": {
+      "androidPackName": "mansion",
+      "deliveryType": "on-demand"
+    },
+    "pn.pack.android": {
+      "androidPackName": "android",
+      "deliveryType": "fast-follow"
+    }
+  },
+  "rules": {
+    "packNamePattern": "^[A-Za-z][A-Za-z0-9_]*$",
+    "deliveryTypes": ["install-time", "fast-follow", "on-demand"],
+    "logicalIdsRemainPlatformNeutral": true
+  },
+  "notes": "Android pack names are intentionally separate from pn.pack.* IDs. Change delivery type only after level-size and first-session requirements are known."
+}

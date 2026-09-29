@@ -1,0 +1,10 @@
+{
+  "UNKNOWN": {
+    "reason": "No licence evidence supplied.",
+    "redistributable": false
+  },
+  "NO-REDISTRIBUTION": {
+    "reason": "Source licence does not permit redistribution.",
+    "redistributable": false
+  }
+}
