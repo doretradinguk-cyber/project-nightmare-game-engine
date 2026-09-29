@@ -4,6 +4,8 @@
 
 **Current phase:** Browser Asset Pack Import / Build Tooling — COMPLETE
 
+**Current main:** `90ab234069185b881d319d55bc8ed25a90d7f6be`
+
 ## Completed this phase
 - Added browser asset-pack builder module.
 - Added explicit file and folder import.
@@ -47,7 +49,7 @@
 7. Physical Android hardware testing has not been performed.
 
 ## Exact resume point after a crash
-Browser tooling commit: **PENDING FINAL COMMIT**
+Browser tooling commit: `90ab234069185b881d319d55bc8ed25a90d7f6be`
 
 NEXT STEP: build the native Android Play Asset Delivery wrapper around the existing logical pack catalogue. Generate Android asset-pack directories/build.gradle files from `data/performance/android-asset-delivery.json`, while keeping `pn.pack.*` IDs unchanged in game code. Use install-time, fast-follow and on-demand only as declared by the platform mapping.
 
