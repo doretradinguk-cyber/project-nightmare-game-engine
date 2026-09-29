@@ -19,3 +19,8 @@ export function getRecommendedResolution(canvas) {
     height: Math.max(1, Math.floor(canvas.clientHeight * ratio))
   };
 }
+
+
+export function getPlatformProfile() {
+  return platformProfile;
+}
