@@ -150,3 +150,27 @@ Connect the classified source records to the asset catalogue/licence verificatio
 **Verification boundary:** Changes are committed to main. Browser UI execution was not available in this session, so visual verification still needs to be performed through the GitHub Pages deployment.
 
 **Next step:** connect the interactive consoles to their real engine/database services instead of demonstration actions, while preserving the common navigation shell.
+
+
+## Build log — 2026-09-29 — Interactive UI correction
+
+**Phase:** Dashboard / Page Interaction — CORRECTED
+
+### What was wrong
+- The previous handover incorrectly described the dashboard interaction phase as complete without browser runtime verification.
+- Sprite Matrix, Game Console and Voice Scripting buttons only changed a status message; they were not performing meaningful browser-side actions.
+- The visual controls were not strong enough to make the navigation read as an interactive game-development console.
+
+### Corrected
+- Sprite Matrix now creates persistent local sprite-count state, opens a real animation-file picker, and changes playback state.
+- Game Console now starts a browser-side engine test state, generates a procedural world seed, persists it locally, and triggers test events.
+- Voice Scripting now creates persistent line slots, uses browser speech synthesis for a real English preview where supported, and saves workspace state locally.
+- Dashboard cards and navigation are explicitly styled as clickable controls with visible button treatment.
+- Existing Database/Admin, Dev Lab and 3D Sandbox routes remain connected.
+
+### Verification boundary
+Repository source has been inspected and corrected. The live GitHub Pages browser runtime is still not directly executable from this session, so deployment/cache behaviour must be checked from the user's browser. The saved screenshot mentioned by the user was not available as a current-conversation attachment to inspect directly.
+
+**Commits:** 3c4ac2ad220a890f5f22b21ae3f879074867da28, af4889d7af846555a0f1c918238957fe81437439
+
+**Exact resume point:** refresh GitHub Pages after these commits and test DASHBOARD -> each console -> DASHBOARD, then test every console control. If the browser still shows the old static interface, inspect the deployed asset versions/cache rather than changing the design again.
