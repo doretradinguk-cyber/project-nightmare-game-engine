@@ -1,0 +1,91 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-09-29T19:57:34.353Z",
+  "purpose": "AI handover queue",
+  "records": [
+    {
+      "name": "chipped_concrete_4k.blend.zip",
+      "type": "UNKNOWN",
+      "confidence": "LOW",
+      "destination": "_DROPZONE/REVIEW/chipped_concrete_4k.blend.zip",
+      "status": "REVIEW"
+    },
+    {
+      "name": "damaged_plaster_4k.blend.zip",
+      "type": "UNKNOWN",
+      "confidence": "LOW",
+      "destination": "_DROPZONE/REVIEW/damaged_plaster_4k.blend.zip",
+      "status": "REVIEW"
+    },
+    {
+      "name": "metal_plate_4k.blend.zip",
+      "type": "UNKNOWN",
+      "confidence": "LOW",
+      "destination": "_DROPZONE/REVIEW/metal_plate_4k.blend.zip",
+      "status": "REVIEW"
+    },
+    {
+      "name": "brushed_concrete_04_4k.blend.zip",
+      "type": "UNKNOWN",
+      "confidence": "LOW",
+      "destination": "_DROPZONE/REVIEW/brushed_concrete_04_4k.blend.zip",
+      "status": "REVIEW"
+    },
+    {
+      "name": "green_metal_rust_4k.blend.zip",
+      "type": "UNKNOWN",
+      "confidence": "LOW",
+      "destination": "_DROPZONE/REVIEW/green_metal_rust_4k.blend.zip",
+      "status": "REVIEW"
+    },
+    {
+      "name": "node-v24.21.0-win-x64.zip",
+      "type": "UNKNOWN",
+      "confidence": "LOW",
+      "destination": "_DROPZONE/REVIEW/node-v24.21.0-win-x64.zip",
+      "status": "REVIEW"
+    },
+    {
+      "name": "OBJ-20260929T164107Z-1-001.zip",
+      "type": "UNKNOWN",
+      "confidence": "LOW",
+      "destination": "_DROPZONE/REVIEW/OBJ-20260929T164107Z-1-001.zip",
+      "status": "REVIEW"
+    },
+    {
+      "name": "painted_concrete_4k.blend.zip",
+      "type": "UNKNOWN",
+      "confidence": "LOW",
+      "destination": "_DROPZONE/REVIEW/painted_concrete_4k.blend.zip",
+      "status": "REVIEW"
+    },
+    {
+      "name": "patterned_terracotta_tiling_4k.blend.zip",
+      "type": "UNKNOWN",
+      "confidence": "LOW",
+      "destination": "_DROPZONE/REVIEW/patterned_terracotta_tiling_4k.blend.zip",
+      "status": "REVIEW"
+    },
+    {
+      "name": "plastered_wall_05_4k.blend.zip",
+      "type": "UNKNOWN",
+      "confidence": "LOW",
+      "destination": "_DROPZONE/REVIEW/plastered_wall_05_4k.blend.zip",
+      "status": "REVIEW"
+    },
+    {
+      "name": "rock_wall_16_4k.blend.zip",
+      "type": "UNKNOWN",
+      "confidence": "LOW",
+      "destination": "_DROPZONE/REVIEW/rock_wall_16_4k.blend.zip",
+      "status": "REVIEW"
+    },
+    {
+      "name": "dry_river_pebbles_4k.blend.zip",
+      "type": "UNKNOWN",
+      "confidence": "LOW",
+      "destination": "_DROPZONE/REVIEW/dry_river_pebbles_4k.blend.zip",
+      "status": "REVIEW"
+    }
+  ]
+}
