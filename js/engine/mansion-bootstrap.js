@@ -6,7 +6,7 @@ import { createLayout } from './procedural-layout.js';
 
 export function bootMansion(canvas, options = {}) {
   const renderer = new NightmareThreeRenderer(canvas);
-  const content = new NightmareContentManager({ catalogUrl: options.catalogUrl ?? './data/assets/asset-catalog.json' });
+  const content = new NightmareContentManager({ catalogUrl: options.catalogUrl ?? '../data/assets/asset-catalog.json' });
   const seed = options.seed ?? Date.now();
   const layout = createLayout(seed, { maxPlayers: options.maxPlayers ?? 8, wings: options.wings ?? 3, roomsPerWing: options.roomsPerWing ?? 4 });
 
@@ -18,8 +18,8 @@ export function bootMansion(canvas, options = {}) {
     .then(() => content.mountPack('pn.pack.core'))
     .then(() => content.mountPack('pn.pack.mansion'))
     .then(() => {
-      const testAsset = 'pn.test.content.triangle';
-      if (content.hasAsset(testAsset) && options.loadContentTest !== false) {
+      const testAsset = options.testAsset ?? null;
+      if (testAsset && content.hasAsset(testAsset) && options.loadContentTest !== false) {
         return renderer.loadGLTF(content.resolveUrl(testAsset), {
           position: [0, 1.2, -2.5],
           scale: 0.75

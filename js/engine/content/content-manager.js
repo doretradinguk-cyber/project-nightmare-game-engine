@@ -8,12 +8,14 @@ export class NightmareContentManager {
     this.packs = new Map();
     this.assets = new Map();
     this.mounted = new Map();
+    this.catalogBaseUrl = null;
   }
 
   async initialise() {
     const response = await fetch(this.catalogUrl, { cache: 'no-store' });
     if (!response.ok) throw new Error(`Content catalog failed: ${response.status}`);
     this.catalog = await response.json();
+    this.catalogBaseUrl = new URL(this.catalogUrl, new URL(this.baseUrl, window.location.href));
     for (const entry of this.catalog.packs ?? []) this.packs.set(entry.id, entry);
     return this;
   }
@@ -22,7 +24,7 @@ export class NightmareContentManager {
     const entry = this.packs.get(packId);
     if (!entry) throw new Error(`Unknown content pack: ${packId}`);
 
-    const manifestUrl = new URL(entry.manifest, new URL(this.baseUrl, window.location.href)).href;
+    const manifestUrl = new URL(entry.manifest, this.catalogBaseUrl).href;
     const response = await fetch(manifestUrl, { cache: 'no-store' });
     if (!response.ok) throw new Error(`Pack manifest failed: ${packId}`);
     const manifest = await response.json();
