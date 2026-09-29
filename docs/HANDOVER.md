@@ -57,3 +57,47 @@ Google's current Android documentation states that Play Asset Pack names must st
 
 ## Recovery rule
 At the end of every substantial build phase update this file with phase/status, commits, completed work, known errors and the exact next step. Never leave an unfinished phase undocumented.
+
+
+## Build log — 2026-09-29
+
+### Phase closed
+**Browser Asset Pack Import / Build Tooling**
+
+### Commit history
+1. `0a2df6a0b3f399c5bc225b694713685bc66ac361` — asset pack architecture and manifests
+2. `01789a145485b0a7a3137bfc5e1b2b2ba3e92441` — content manager integration
+3. `921292c361abf7ad47e25a5fee8d6403599da8a3` — sandbox content readiness
+4. `7e157e8b52bdbc47dcd1e9c61da8f4dab3c99b30` — previous phase handover close
+5. `90ab234069185b881d319d55bc8ed25a90d7f6be` — browser asset pack import/build tooling
+6. **CURRENT:** documentation/build-log close commit — pending
+
+### Files added or changed
+- `js/tools/asset-builder/pack-builder.js`
+- `data/licences/approved.json`
+- `data/licences/blocked.json`
+- `data/licences/review-required.json`
+- `data/performance/android-asset-delivery.json`
+- `js/ui/dev-lab.js`
+- `css/main.css`
+- `docs/HANDOVER.md`
+
+### Build-log result
+- Browser file import: COMPLETE
+- Browser folder import: COMPLETE where File System Access API is available
+- File-input fallback: COMPLETE
+- SHA-256 generation: COMPLETE
+- Licence gate: COMPLETE
+- Redistribution gate: COMPLETE
+- Manifest generation: COMPLETE
+- Manifest validation: COMPLETE
+- Pack folder build: COMPLETE where File System Access API is available
+- Manifest-only export fallback: COMPLETE
+- Android logical-pack mapping: COMPLETE
+- Native Android Gradle/PAD wrapper: NEXT
+- Physical Android validation: NOT YET RUN
+
+### Verification boundary
+No claim is made that the browser UI or Android build has been physically executed in this session. The implementation has been committed to GitHub; runtime/browser and physical-device testing remain explicit follow-up tasks.
+
+GitHub records commits as identifiable snapshots with unique commit IDs, making this handover suitable for recovering the exact development sequence. citeturn0search0turn0search3
