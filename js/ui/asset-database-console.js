@@ -100,9 +100,19 @@ export function mountAssetDatabaseConsole(root){
             <div class="terminal-line">ROUTER: <b id="db-router">STANDBY</b></div>
             <div class="terminal-line">AI HANDOVER QUEUE: <b id="db-ai">0</b></div>
             <div class="terminal-line">LAST OPERATION: <span id="db-operation">NONE</span></div>
-            <div class="terminal-progress-wrap"><div class="terminal-progress"><span id="db-progress"></span></div><strong id="db-progress-text">0%</strong></div><div class="terminal-progress-stage" id="db-progress-stage">READY</div>
+            
           </div>
           <div class="crt-map" aria-hidden="true"><span>ASSET</span><span>SCAN</span><span>CLASSIFY</span><span>ROUTE</span><span>VERIFY</span><b>▦</b></div>
+        </div>
+      </div>
+      <div class="asset-intake-status" id="db-intake-status">
+        <div class="asset-intake-progress">
+          <div class="terminal-progress-wrap"><div class="terminal-progress"><span id="db-progress"></span></div><strong id="db-progress-text">0%</strong></div>
+          <div class="terminal-progress-stage" id="db-progress-stage">READY</div>
+        </div>
+        <div class="asset-complete-indicator" id="db-complete" aria-hidden="true">
+          <span class="asset-folder-icon" aria-hidden="true"><i></i><b>✓</b></span>
+          <span><strong>UPLOAD COMPLETE</strong><small id="db-complete-detail">READY FOR AI INTAKE</small></span>
         </div>
       </div>
       <div class="floppy-drive"><div class="floppy-slot"></div><div class="floppy-label">PROJECT NIGHTMARE // ASSET SOURCE BUS</div><div class="floppy-light"></div></div>
@@ -132,6 +142,7 @@ export function mountAssetDatabaseConsole(root){
 
   let sourceRoot=null;
   let queue=[];
+  root.querySelector('#db-complete').setAttribute('aria-hidden','true');
   const source=root.querySelector('#db-source');
   const log=root.querySelector('#db-log');
 
@@ -165,9 +176,23 @@ export function mountAssetDatabaseConsole(root){
     root.querySelector('#db-progress-stage').textContent=stage;
   }
 
+  function resetCompletion(){
+    const indicator=root.querySelector('#db-complete');
+    indicator.classList.remove('complete');
+    indicator.setAttribute('aria-hidden','true');
+  }
+
+  function markComplete(detail){
+    const indicator=root.querySelector('#db-complete');
+    root.querySelector('#db-complete-detail').textContent=detail||'READY FOR AI INTAKE';
+    indicator.classList.add('complete');
+    indicator.setAttribute('aria-hidden','false');
+  }
+
   async function ingestArchive(file){
     if(!sourceRoot) throw new Error('Connect ASSET_SOURCE_LIBRARY first.');
     if(!file) return;
+    resetCompletion();
     const extension=ext(file.name);
     const allowed=['zip','7z','rar','tar','gz','tgz'];
     if(!allowed.includes(extension)) throw new Error('Unsupported archive format. Use ZIP or 7-Zip (.7z).');
@@ -212,6 +237,7 @@ export function mountAssetDatabaseConsole(root){
       records:[{name:file.name,type:'INTAKE ARCHIVE',confidence:'OPERATOR',destination:'_DROPZONE/'+clean(file.name),status:'READY FOR AI INTAKE'}]
     },null,2));
     setProgress(100,'READY FOR AI INTAKE');
+    markComplete(file.name+' // READY FOR AI INTAKE');
     addLog('ARCHIVE STAGED // '+file.name+' -> ASSET_SOURCE_LIBRARY/_DROPZONE');
   }
 
@@ -228,6 +254,7 @@ export function mountAssetDatabaseConsole(root){
     if(!selected.length) return;
     queue=[];
     renderQueue();
+    resetCompletion();
     setProgress(8,'SCANNING FILES');
     root.querySelector('#db-router').textContent='SCANNING';
     for(let i=0;i<selected.length;i++){
@@ -247,6 +274,8 @@ export function mountAssetDatabaseConsole(root){
     },null,2));
     root.querySelector('#db-router').textContent='COMPLETE';
     root.querySelector('#db-operation').textContent=selected.length+' ASSET'+(selected.length===1?'':'S')+' ROUTED';
+    setProgress(100,'READY FOR AI INTAKE');
+    markComplete(selected.length+' ASSET'+(selected.length===1?'':'S')+' // READY FOR AI INTAKE');
     addLog('INGEST COMPLETE // ORIGINALS COPIED // AI QUEUE WRITTEN');
   }
 
