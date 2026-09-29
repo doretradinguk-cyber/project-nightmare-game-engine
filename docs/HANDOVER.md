@@ -282,3 +282,32 @@ Source implementation has been committed and inspected. Browser runtime executio
 **Commits:** fbe8239d0c57ef07e3b748433c32030f68d6101b, CSS and handover commits follow.
 
 **Verification boundary:** Source implementation has been committed and inspected. Browser runtime/GitHub Pages visual execution has not been performed in this session. User-side test should confirm the progress strip sits above the floppy drive and the green folder/check appears at 100% after a successful upload.
+
+
+## Build log — 2026-09-29 — Asset Source Intake Sorting
+
+**Phase:** Asset Source Library / GitHub Dropzone Intake — SORTED
+
+### Completed
+- Confirmed ZIP files are tracked through Git LFS; the small Git objects visible through the API are LFS pointer files, not truncated archives.
+- Removed the accidentally nested `PROJECT_NIGHTMARE_ASSET_INTAKE.zip` tree and duplicate nested intake paths.
+- Moved the sourced texture packages into `ASSET_SOURCE_LIBRARY/01_POLYHAVEN/06_TEXTURES/` as untouched source masters.
+- Moved the unidentified OBJ package into `ASSET_SOURCE_LIBRARY/01_POLYHAVEN/07_MODELS/REVIEW/` pending inspection and attribution confirmation.
+- Isolated `node-v24.21.0-win-x64.zip` under `ASSET_SOURCE_LIBRARY/08_EXPERIMENTAL/TOOLS/` so tooling cannot be mistaken for a game asset.
+- Rebuilt `ASSET_SOURCE_LIBRARY/_DROPZONE/asset-ingest-queue.json` as the clean AI intake manifest.
+- No archive contents were extracted, modified, optimised or deleted during sorting; existing LFS pointer blobs were reused.
+
+### Current source layout
+```
+ASSET_SOURCE_LIBRARY/
+├── 01_POLYHAVEN/
+│   ├── 06_TEXTURES/       <- 8 sourced material packages
+│   └── 07_MODELS/REVIEW/  <- OBJ package awaiting inspection
+├── 08_EXPERIMENTAL/TOOLS/ <- Node.js tooling package
+└── _DROPZONE/              <- clean incoming queue for future uploads
+```
+
+**Commit:** 0755b81fab4e3501596902071d81ed8e98862599
+
+### Next intake step
+For future uploads, place new source archives directly into `ASSET_SOURCE_LIBRARY/_DROPZONE/`, commit/push with GitHub Desktop, then run the AI intake pass. Source archives should remain intact until licence, provenance, hashes and contents have been verified.
