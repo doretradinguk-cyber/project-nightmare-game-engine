@@ -1,0 +1,10 @@
+{
+  "id": "pn.pack.android",
+  "version": "0.1.0",
+  "type": "platform",
+  "installPolicy": "optional",
+  "platforms": ["android"],
+  "dependencies": ["pn.pack.core"],
+  "assets": [],
+  "notes": "Android optimisation pack. Intended to map to Play Asset Delivery in a native Android release."
+}

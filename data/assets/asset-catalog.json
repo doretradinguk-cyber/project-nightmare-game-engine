@@ -1,0 +1,14 @@
+{
+  "schemaVersion": 1,
+  "catalogId": "pn.asset-catalog",
+  "enginePolicy": {
+    "resolveById": true,
+    "neverResolveBySourcePath": true,
+    "blockedIfRedistributableFalse": true
+  },
+  "packs": [
+    {"id":"pn.pack.core","manifest":"packs/core.json","type":"core","installPolicy":"install-time"},
+    {"id":"pn.pack.mansion","manifest":"packs/mansion.json","type":"world","installPolicy":"optional"},
+    {"id":"pn.pack.android","manifest":"packs/android.json","type":"platform","installPolicy":"optional"}
+  ]
+}

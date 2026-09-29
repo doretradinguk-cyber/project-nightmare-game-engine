@@ -1,0 +1,10 @@
+{
+  "id": "pn.pack.core",
+  "version": "0.1.0",
+  "type": "core",
+  "installPolicy": "install-time",
+  "platforms": ["web", "windows", "android"],
+  "dependencies": [],
+  "assets": [],
+  "notes": "Core pack placeholder. Essential released assets are added only after licence validation."
+}

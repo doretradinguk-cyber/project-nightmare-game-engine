@@ -1,0 +1,10 @@
+{
+  "id": "pn.pack.mansion",
+  "version": "0.1.0",
+  "type": "world",
+  "installPolicy": "optional",
+  "platforms": ["web", "windows", "android"],
+  "dependencies": ["pn.pack.core"],
+  "assets": [],
+  "notes": "Mansion world pack. Source assets remain outside the repository until cleared for redistribution."
+}
