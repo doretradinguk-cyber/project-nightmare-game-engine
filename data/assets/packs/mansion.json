@@ -1,10 +1,16 @@
 {
   "id": "pn.pack.mansion",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "type": "world",
   "installPolicy": "optional",
-  "platforms": ["web", "windows", "android"],
-  "dependencies": ["pn.pack.core"],
+  "platforms": [
+    "web",
+    "windows",
+    "android"
+  ],
+  "dependencies": [
+    "pn.pack.core"
+  ],
   "assets": [
     {
       "id": "pn.test.content.triangle",
@@ -13,7 +19,15 @@
       "redistributable": true,
       "licenceRef": "PROJECT-NIGHTMARE-ORIGINAL-TEST",
       "sha256": "development-test-asset"
+    },
+    {
+      "id": "pn.mansion.sentinel-eye",
+      "path": "../../assets/props/nightmare-eye.svg",
+      "type": "visual-prop",
+      "redistributable": true,
+      "licenceRef": "PROJECT-NIGHTMARE-ORIGINAL",
+      "sha256": "4930c50c0636eb2845bca7c47d0d43de1d2f72dd61d0f0211c8a6f9026af4757"
     }
   ],
-  "notes": "Contains the first original local test model used to verify pack mounting and GLTF resolution."
+  "notes": "Contains original mansion visual props, including the reusable Sentinel Eye used by the Virtual Sandbox."
 }
