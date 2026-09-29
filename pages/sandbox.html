@@ -12,18 +12,20 @@
 <div id="app"></div>
 <script type="module">
 import { bootMansion } from '../js/engine/mansion-bootstrap.js';
-
 const app=document.querySelector('#app');
-app.innerHTML='<main class="nightmare-shell sandbox-view"><header class="nightmare-header"><small>PROJECT NIGHTMARE // ENVIRONMENT LAB</small><h1>VIRTUAL SANDBOX</h1><p>MANSION // FIRST ENVIRONMENT</p></header><section class="sandbox-console"><div class="sandbox-toolbar"><button id="load">LOAD MANSION</button><button id="fullscreen">FULLSCREEN</button><span id="status">STANDBY</span></div><canvas id="sandbox-canvas" aria-label="Mansion environment viewport"></canvas><aside><strong>ENVIRONMENT</strong><span>MANSION</span><strong>ROOM</strong><span id="room">FOYER</span><strong>POWER</strong><span id="power">68%</span><strong>SURVEILLANCE</strong><span>ACTIVE</span></aside></section></main>';
-
+app.innerHTML=`<main class="nightmare-shell sandbox-view"><header class="nightmare-header"><small>PROJECT NIGHTMARE // ENVIRONMENT LAB</small><h1>VIRTUAL SANDBOX</h1><p>MANSION // PROCEDURAL 3D BUILD</p></header><section class="sandbox-console"><div class="sandbox-toolbar"><button id="load">GENERATE MANSION</button><button id="new">NEW SEED</button><button id="fullscreen">FULLSCREEN</button><span id="status">STANDBY</span></div><canvas id="sandbox-canvas" aria-label="First-person procedural Mansion viewport"></canvas><aside><strong>SEED</strong><span id="seed">—</span><strong>ROOM</strong><span id="room">HUB</span><strong>POWER</strong><span id="power">68%</span><strong>PLAYERS</strong><span>1 / 8</span><strong>CONTROLS</strong><span>WASD + MOUSE</span></aside></section></main>`;
 let runtime=null;
-document.querySelector('#load').addEventListener('click',()=>{
-  runtime ??= bootMansion(document.querySelector('#sandbox-canvas'));
-  document.querySelector('#status').textContent='MANSION LOADED // WEBGL READY: '+runtime.renderer.ready;
-});
-document.querySelector('#fullscreen').addEventListener('click',()=>{
-  document.querySelector('#sandbox-canvas').requestFullscreen?.();
-});
+function load(seed=Date.now()){
+ runtime?.destroy();
+ runtime=bootMansion(document.querySelector('#sandbox-canvas'),{seed,maxPlayers:8});
+ document.querySelector('#seed').textContent=runtime.seed;
+ document.querySelector('#status').textContent=`3D WORLD ONLINE // ${runtime.layout.nodes.length} NODES // ${runtime.layout.edges.length} LINKS`;
+}
+document.querySelector('#load').addEventListener('click',()=>load());
+document.querySelector('#new').addEventListener('click',()=>load(Date.now()));
+document.querySelector('#fullscreen').addEventListener('click',()=>document.querySelector('#sandbox-canvas').requestFullscreen?.());
+setInterval(()=>{if(runtime) document.querySelector('#room').textContent=runtime.getRoom().toUpperCase();},200);
+load();
 </script>
 </body>
 </html>
