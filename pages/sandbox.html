@@ -6,14 +6,52 @@
 <title>Project Nightmare // Virtual Sandbox</title>
 <link rel="stylesheet" href="../css/main.css"><link rel="stylesheet" href="../css/nightmare.css"><link rel="stylesheet" href="../css/sandbox.css">
 </head>
-<body data-page="sandbox"><div id="app"></div>
+<body data-page="sandbox">
+<main class="nightmare-shell sandbox-view">
+<header class="nightmare-header">
+<small>PROJECT NIGHTMARE // ENVIRONMENT LAB</small><h1>VIRTUAL SANDBOX</h1>
+<p>THE LIVING MANSION // PROCEDURAL 3D PROVING GROUND</p>
+<nav class="nightmare-nav"><a href="../index.html">DASHBOARD</a><a href="sprite-matrix.html">SPRITE MATRIX</a><a href="game-console.html">GAME CONSOLE</a><a href="voice-scripting.html">VOICE SCRIPTING</a><a href="database-admin.html">DATABASE &amp; ADMIN</a><a href="dev.html">DEV LAB</a><a class="active" href="sandbox.html">VIRTUAL SANDBOX</a></nav>
+</header>
+<section class="sandbox-console">
+<div class="sandbox-toolbar">
+<button id="generate">GENERATE WORLD</button><button id="event">TRIGGER NIGHTMARE</button><button id="power">POWER CYCLE</button><button id="reset">RESET VIEW</button><button id="fullscreen">FULLSCREEN</button><span id="status">BOOTING...</span>
+</div>
+<div class="sandbox-stage">
+<canvas id="sandbox-canvas" aria-label="Project Nightmare first-person 3D sandbox"></canvas>
+<div class="reticle"></div>
+<div class="scanline"></div>
+<div class="hud hud-left"><span>SECTOR <b id="sector">HUB</b></span><span>SEED <b id="seed">—</b></span><span>NODES <b id="nodes">—</b></span></div>
+<div class="hud hud-right"><span>POWER <b id="powerReadout">68%</b></span><span>SIGNAL <b id="signal">STABLE</b></span><span>FPS <b id="fps">—</b></span></div>
+<div class="prompt">CLICK VIEWPORT TO ENTER // WASD MOVE // MOUSE LOOK // SHIFT SPRINT // ESC RELEASE</div>
+</div>
+<div class="sandbox-bottom">
+<div><strong>WORLD TELEMETRY</strong><span>ARCHITECTURE <b>ADAPTIVE</b></span><span>SURVEILLANCE <b>ONLINE</b></span><span>JESTER MANIFESTATION <b>ARMED</b></span></div>
+<div><strong>PROCEDURAL MAP</strong><span id="map">Awaiting world generation...</span></div>
+</div>
+</section>
+</main>
 <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.186.0/build/three.module.js"}}</script>
 <script type="module">
 import { bootMansion } from '../js/engine/mansion-bootstrap.js';
-const app=document.querySelector('#app');
-app.innerHTML=`<main class="nightmare-shell sandbox-view"><header class="nightmare-header"><small>PROJECT NIGHTMARE // ENVIRONMENT LAB</small><h1>VIRTUAL SANDBOX</h1><p>THREE.JS // PBR-READY PROCEDURAL MANSION</p><nav class="nightmare-nav"><a href="../index.html">DASHBOARD</a><a href="sprite-matrix.html">SPRITE MATRIX</a><a href="game-console.html">GAME CONSOLE</a><a href="voice-scripting.html">VOICE SCRIPTING</a><a href="database-admin.html">DATABASE &amp; ADMIN</a><a href="dev.html">DEV LAB</a><a class="active" href="sandbox.html">VIRTUAL SANDBOX</a></nav></header><section class="sandbox-console"><div class="sandbox-toolbar"><button id="load">GENERATE MANSION</button><button id="new">NEW SEED</button><button id="fullscreen">FULLSCREEN</button><span id="status">STANDBY</span></div><canvas id="sandbox-canvas" aria-label="First-person procedural Mansion viewport"></canvas><aside><strong>SEED</strong><span id="seed">—</span><strong>ROOM</strong><span id="room">HUB</span><strong>POWER</strong><span id="power">68%</span><strong>PLAYERS</strong><span>1 / 8</span><strong>RENDERER</strong><span>THREE.JS</span><strong>CONTROLS</strong><span>WASD + MOUSE</span></aside></section></main>`;
-let runtime=null;
-async function load(seed=Date.now()){runtime?.destroy();runtime=bootMansion(document.querySelector('#sandbox-canvas'),{seed,maxPlayers:8});document.querySelector('#seed').textContent=runtime.seed;document.querySelector('#status').textContent='MOUNTING CONTENT PACKS...';try{await runtime.ready;document.querySelector('#status').textContent=`3D WORLD ONLINE // ${runtime.layout.nodes.length} NODES // ${runtime.layout.edges.length} LINKS // CONTENT READY`;}catch(error){console.error(error);document.querySelector('#status').textContent='CONTENT ERROR // SEE CONSOLE';}}
-document.querySelector('#load').addEventListener('click',()=>load());document.querySelector('#new').addEventListener('click',()=>load(Date.now()));document.querySelector('#fullscreen').addEventListener('click',()=>document.querySelector('#sandbox-canvas').requestFullscreen?.());
-setInterval(()=>{if(runtime)document.querySelector('#room').textContent=runtime.getRoom().toUpperCase()},200);load();
-</script></body></html>
+import { SandboxExperience } from '../js/engine/sandbox-experience.js';
+const $=id=>document.getElementById(id); let runtime=null,effect=null,powerOn=true,last=performance.now(),frames=0,fps=0;
+function status(s){$('status').textContent=s;$('signal').textContent=s.includes('BREACH')?'BREACH':s.includes('STABLE')?'STABLE':'ONLINE'}
+async function load(seed=Date.now()){
+ if(runtime) runtime.destroy(); effect=null;
+ $('status').textContent='GENERATING PROCEDURAL WORLD...';
+ runtime=bootMansion($('sandbox-canvas'),{seed,maxPlayers:8});
+ effect=new SandboxExperience(runtime,{status,telemetry:(k,v)=>{if(k==='POWER')$('powerReadout').textContent=v}});
+ runtime.renderer.addEffect(effect);
+ $('seed').textContent=runtime.seed; $('nodes').textContent=runtime.layout.nodes.length;
+ $('map').textContent=runtime.layout.edges.length+' architectural links // '+runtime.layout.stairs.length+' vertical transitions // 8-player topology';
+ try{await runtime.ready;status('WORLD ONLINE // CONTENT READY')}catch(e){console.error(e);status('CONTENT WARNING // PROCEDURAL WORLD STILL ONLINE')}
+}
+$('generate').onclick=()=>load(Date.now()); $('event').onclick=()=>effect?.triggerEvent();
+$('power').onclick=()=>{powerOn=!powerOn;effect?.setPower(powerOn?.68:.12);status(powerOn?'POWER RESTORED // STABLE':'POWER FAILURE // EMERGENCY LIGHTING')};
+$('reset').onclick=()=>{if(!runtime)return;const n=runtime.layout.nodes.find(x=>x.type==='hub')||runtime.layout.nodes[0],p=runtime.renderer.point(n);runtime.renderer.camera.position.set(p.x,1.72,p.z+4);runtime.renderer.yaw=Math.PI;runtime.renderer.pitch=0};
+$('fullscreen').onclick=()=>document.querySelector('.sandbox-stage').requestFullscreen?.();
+setInterval(()=>{if(runtime){$('sector').textContent=runtime.getRoom().toUpperCase();frames++;const now=performance.now();if(now-last>1000){fps=frames*1000/(now-last);frames=0;last=now;$('fps').textContent=Math.round(fps)}}},200);
+load();
+</script>
+</body></html>
