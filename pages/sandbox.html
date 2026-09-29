@@ -42,9 +42,10 @@ const $=id=>document.getElementById(id); let runtime=null,effect=null,powerOn=tr
 const uiEyes=[$('uiEyeLeft'),$('uiEyeRight')];
 window.addEventListener('mousemove',e=>{
  const x=(e.clientX/window.innerWidth-.5)*2, y=(e.clientY/window.innerHeight-.5)*2;
- uiEyes.forEach((eye,i)=>{
-   const max=7, ox=x*max*(i===0?1:-1), oy=y*max;
-   eye.style.setProperty('--eye-x',ox+'px'); eye.style.setProperty('--eye-y',oy+'px');
+ uiEyes.forEach(eye=>{
+   const max=5;
+   eye.style.setProperty('--pupil-x',(x*max)+'px');
+   eye.style.setProperty('--pupil-y',(y*max)+'px');
  });
 });
 function status(s){$('status').textContent=s;$('signal').textContent=s.includes('BREACH')?'BREACH':s.includes('STABLE')?'STABLE':'ONLINE'}
