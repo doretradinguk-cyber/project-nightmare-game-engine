@@ -1,0 +1,18 @@
+{
+  "schemaVersion": 1,
+  "purpose": "AI asset intake queue",
+  "status": "SORTED",
+  "source": "GitHub _DROPZONE",
+  "records": [
+    {"name":"brushed_concrete_04_4k.blend.zip","classification":"texture-source","destination":"01_POLYHAVEN/06_TEXTURES/","status":"SOURCE_STAGED"},
+    {"name":"chipped_concrete_4k.blend.zip","classification":"texture-source","destination":"01_POLYHAVEN/06_TEXTURES/","status":"SOURCE_STAGED"},
+    {"name":"damaged_plaster_4k.blend.zip","classification":"texture-source","destination":"01_POLYHAVEN/06_TEXTURES/","status":"SOURCE_STAGED"},
+    {"name":"metal_plate_4k.blend.zip","classification":"texture-source","destination":"01_POLYHAVEN/06_TEXTURES/","status":"SOURCE_STAGED"},
+    {"name":"painted_concrete_4k.blend.zip","classification":"texture-source","destination":"01_POLYHAVEN/06_TEXTURES/","status":"SOURCE_STAGED"},
+    {"name":"patterned_terracotta_tiling_4k.blend.zip","classification":"texture-source","destination":"01_POLYHAVEN/06_TEXTURES/","status":"SOURCE_STAGED"},
+    {"name":"plastered_wall_05_4k.blend.zip","classification":"texture-source","destination":"01_POLYHAVEN/06_TEXTURES/","status":"SOURCE_STAGED"},
+    {"name":"rock_wall_16_4k.blend.zip","classification":"texture-source","destination":"01_POLYHAVEN/06_TEXTURES/","status":"SOURCE_STAGED"},
+    {"name":"OBJ-20260929T164107Z-1-001.zip","classification":"model-unknown","destination":"01_POLYHAVEN/07_MODELS/REVIEW/","status":"REVIEW_REQUIRED"},
+    {"name":"node-v24.21.0-win-x64.zip","classification":"tooling","destination":"08_EXPERIMENTAL/TOOLS/","status":"ISOLATED"}
+  ]
+}
