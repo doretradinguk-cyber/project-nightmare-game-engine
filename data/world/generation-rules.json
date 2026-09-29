@@ -1,0 +1,18 @@
+{
+  "version": 1,
+  "design": "organic-modular-horror",
+  "maxPlayers": 8,
+  "rules": {
+    "minimumWings": 2,
+    "maximumWings": 5,
+    "roomsPerWing": [3, 7],
+    "requireCentralHub": true,
+    "allowLoops": true,
+    "allowSideRooms": true,
+    "allowStairs": true,
+    "avoidDeadEndOveruse": true,
+    "preservePlayerSeparation": true,
+    "supportFutureArchitectureEvents": true
+  },
+  "futureEnvironments": ["carnival-nightmare"]
+}
