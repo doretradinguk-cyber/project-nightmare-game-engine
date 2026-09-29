@@ -839,3 +839,124 @@ with:
 - seed-based regeneration
 
 That is the next major Project Nightmare milestone.
+
+
+---
+
+## 25. ASSET DATABASE STATUS — UPDATED
+
+A real browser-persistent asset vault has now been added.
+
+Files:
+
+- `js/database/asset-store.js`
+- `js/database/README.md`
+- `js/ui/dev-lab.js`
+
+Database:
+
+`project-nightmare-assets`
+
+Storage engine:
+
+**IndexedDB**
+
+The vault stores binary files plus structured metadata including:
+
+- stable asset ID
+- name
+- type
+- category
+- MIME type
+- size
+- tags
+- description
+- engine path
+- version
+- timestamps
+- binary Blob
+- extensible metadata
+
+The Dev Page now has an initial:
+
+- asset drop/browse area
+- category selection
+- tags
+- descriptions
+- persistent ingest
+- asset library
+- search
+- type filtering
+- image/animation preview
+- audio preview
+- asset deletion
+- vault count
+- UI/background visual preview laboratory
+
+### IMPORTANT DATABASE BOUNDARY
+
+This is currently a **local persistent browser database**.
+
+It survives normal reloads/restarts for that browser profile, but it is **not a cloud/shared multiplayer database**.
+
+Do not claim uploaded assets are automatically available on another computer yet.
+
+The asset metadata contract and stable IDs are deliberately designed so a future server-backed storage layer can be introduced without redesigning the game asset model.
+
+### NEXT DATABASE WORK
+
+Connect the asset IDs into:
+
+- Sprite Matrix
+- animation system
+- Voice Scripting
+- Virtual Sandbox
+- environment materials
+- UI/background system
+- game runtime
+
+The engine should request assets by stable ID rather than relying on hard-coded page-local uploads.
+
+---
+
+## 26. VISUAL DEVELOPMENT DIRECTION — UPDATED
+
+The current visual layer is still an early placeholder and is **not yet at the intended AAA/cinematic browser-game target**.
+
+The Dev Page is now being treated as the future visual production hub.
+
+It should eventually support authoring/reusing:
+
+- game UI
+- menus
+- HUDs
+- title screens
+- backgrounds
+- environmental artwork
+- sprite sheets
+- animation compositions
+- material/texture sets
+- CRT/surveillance screens
+- horror overlays
+- lighting presets
+- visual effects
+- reusable interface components
+
+Future uploaded artwork and animations supplied by the project team must be ingestible into the same asset vault rather than becoming isolated one-off files.
+
+The visual target is substantially beyond retro/low-fidelity presentation. Retro digital horror can remain part of the aesthetic language, but the overall presentation should support detailed, cinematic, atmospheric 3D work.
+
+---
+
+## 27. IMMEDIATE BUILD PRIORITIES AFTER THIS HANDOVER
+
+1. Upgrade the renderer from WebGL clear-screen foundation to real 3D rendering.
+2. Build procedural 3D geometry from the existing room graph.
+3. Build first-person camera and collision.
+4. Build a proper visual material/lighting pipeline.
+5. Connect the Dev asset vault to engine resources.
+6. Expand the Dev Page into a visual composition/editor system.
+7. Upgrade the Virtual Sandbox to show the actual generated environment.
+8. Preserve Android/desktop adaptive quality.
+9. Keep multiplayer architecture capped at 8 players.
+10. Keep the system ready for supplied artwork and animations later.
