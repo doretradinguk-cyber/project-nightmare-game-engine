@@ -2,6 +2,8 @@
 
 **Updated:** 2026-09-29
 
+**Last implementation commit:** `0a2df6a0b3f399c5bc225b694713685bc66ac361`
+
 ## Current phase
 ### Asset Pack Foundation — IMPLEMENTED
 
@@ -26,7 +28,7 @@ Example: pn.mansion.prop.cctv_01
 
 That ID can eventually resolve to a browser folder, Windows package, Android Play Asset Pack or another backend without changing gameplay code.
 
-Android supports install-time, fast-follow and on-demand asset packs; Steam uses separately delivered/mounted depots and DLC depots. citeturn0search2turn0search0
+Android supports install-time, fast-follow and on-demand asset packs; Steam uses separately delivered/mounted depots and DLC depots.
 
 ## Hard-drive workflow
 
@@ -44,6 +46,7 @@ DOWNLOAD -> MASTER -> LICENCE CHECK -> STAGE -> OPTIMISE -> VALIDATE -> BUILD PA
 - [x] Core/Mansion/Android pack placeholders
 - [x] Licence gate in content resolution
 - [x] Crash-safe handover record
+- [x] Changes committed to `main`
 - [ ] Connect content manager to live Mansion renderer
 - [ ] Add cleared GLB/texture/audio assets
 - [ ] Add SHA-256 build validation
