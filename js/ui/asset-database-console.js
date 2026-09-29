@@ -100,7 +100,7 @@ export function mountAssetDatabaseConsole(root){
             <div class="terminal-line">ROUTER: <b id="db-router">STANDBY</b></div>
             <div class="terminal-line">AI HANDOVER QUEUE: <b id="db-ai">0</b></div>
             <div class="terminal-line">LAST OPERATION: <span id="db-operation">NONE</span></div>
-            <div class="terminal-bar"><span id="db-progress"></span></div>
+            <div class="terminal-progress-wrap"><div class="terminal-progress"><span id="db-progress"></span></div><strong id="db-progress-text">0%</strong></div><div class="terminal-progress-stage" id="db-progress-stage">READY</div>
           </div>
           <div class="crt-map" aria-hidden="true"><span>ASSET</span><span>SCAN</span><span>CLASSIFY</span><span>ROUTE</span><span>VERIFY</span><b>▦</b></div>
         </div>
@@ -158,12 +158,20 @@ export function mountAssetDatabaseConsole(root){
     addLog('SOURCE LIBRARY CONNECTED // REQUIRED FOLDERS VERIFIED');
   }
 
+  function setProgress(percent,stage){
+    const safe=Math.max(0,Math.min(100,Math.round(percent)));
+    root.querySelector('#db-progress').style.width=safe+'%';
+    root.querySelector('#db-progress-text').textContent=safe+'%';
+    root.querySelector('#db-progress-stage').textContent=stage;
+  }
+
   async function ingestArchive(file){
     if(!sourceRoot) throw new Error('Connect ASSET_SOURCE_LIBRARY first.');
     if(!file) return;
     const extension=ext(file.name);
     const allowed=['zip','7z','rar','tar','gz','tgz'];
     if(!allowed.includes(extension)) throw new Error('Unsupported archive format. Use ZIP or 7-Zip (.7z).');
+
     queue=[{
       name:file.name,
       type:'INTAKE ARCHIVE',
@@ -173,17 +181,45 @@ export function mountAssetDatabaseConsole(root){
     }];
     renderQueue();
     root.querySelector('#db-router').textContent='ARCHIVE INTAKE';
-    root.querySelector('#db-progress').style.width='35%';
-    addLog('INTAKE ARCHIVE SELECTED // '+file.name);
-    await writeFile(sourceRoot,'_DROPZONE/'+clean(file.name),file);
-    root.querySelector('#db-progress').style.width='100%';
+    root.querySelector('#db-operation').textContent='PREPARING ARCHIVE';
+    setProgress(0,'PREPARING');
+
+    const total=file.size||0;
+    addLog('INTAKE ARCHIVE SELECTED // '+file.name+' // '+formatBytes(total));
+
+    // Write the archive in chunks so the console can show real transfer progress.
+    const target=await (async()=>{
+      const dir=await sourceRoot.getDirectoryHandle('_DROPZONE',{create:true});
+      return dir.getFileHandle(clean(file.name),{create:true});
+    })();
+    const writable=await target.createWritable();
+    const chunkSize=4*1024*1024;
+    let offset=0;
+    while(offset<total){
+      const chunk=file.slice(offset,Math.min(offset+chunkSize,total));
+      await writable.write(chunk);
+      offset+=chunk.size;
+      setProgress(total?offset/total*100:100,'UPLOADING ARCHIVE');
+    }
+    if(total===0) setProgress(100,'UPLOADING ARCHIVE');
+    await writable.close();
+
+    setProgress(100,'FINALISING');
     root.querySelector('#db-router').textContent='COMPLETE';
     root.querySelector('#db-operation').textContent='ARCHIVE STAGED';
     await writeText(sourceRoot,'_DROPZONE/asset-ingest-queue.json',JSON.stringify({
       schemaVersion:1,generatedAt:new Date().toISOString(),purpose:'AI handover queue',
       records:[{name:file.name,type:'INTAKE ARCHIVE',confidence:'OPERATOR',destination:'_DROPZONE/'+clean(file.name),status:'READY FOR AI INTAKE'}]
     },null,2));
+    setProgress(100,'READY FOR AI INTAKE');
     addLog('ARCHIVE STAGED // '+file.name+' -> ASSET_SOURCE_LIBRARY/_DROPZONE');
+  }
+
+  function formatBytes(bytes){
+    if(!bytes) return '0 B';
+    const units=['B','KB','MB','GB'];
+    const index=Math.min(Math.floor(Math.log(bytes)/Math.log(1024)),units.length-1);
+    return (bytes/Math.pow(1024,index)).toFixed(index?1:0)+' '+units[index];
   }
 
   async function ingestFiles(files){
@@ -192,7 +228,7 @@ export function mountAssetDatabaseConsole(root){
     if(!selected.length) return;
     queue=[];
     renderQueue();
-    root.querySelector('#db-progress').style.width='8%';
+    setProgress(8,'SCANNING FILES');
     root.querySelector('#db-router').textContent='SCANNING';
     for(let i=0;i<selected.length;i++){
       const file=selected[i];
@@ -203,7 +239,7 @@ export function mountAssetDatabaseConsole(root){
       renderQueue();
       addLog('CLASSIFIED '+file.name+' -> '+destination);
       await writeFile(sourceRoot,destination,file);
-      root.querySelector('#db-progress').style.width=Math.round(((i+1)/selected.length)*100)+'%';
+      setProgress(Math.round(((i+1)/selected.length)*100),'ROUTING FILE '+(i+1)+' OF '+selected.length);
     }
     await writeText(sourceRoot,'_DROPZONE/asset-ingest-queue.json',JSON.stringify({
       schemaVersion:1,generatedAt:new Date().toISOString(),purpose:'AI handover queue',
