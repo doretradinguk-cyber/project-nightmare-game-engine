@@ -1,0 +1,2 @@
+import { getAssetUrl } from '../database/asset-store.js';
+export async function loadVaultAsset(renderer,assetId,options={}){const url=await getAssetUrl(assetId);if(!url)throw new Error(`Asset not found in vault: ${assetId}`);try{return await renderer.loadGLTF(url,options)}finally{URL.revokeObjectURL(url)}}
