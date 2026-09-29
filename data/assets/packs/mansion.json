@@ -22,7 +22,7 @@
     },
     {
       "id": "pn.mansion.sentinel-eye",
-      "path": "../../assets/props/nightmare-eye.svg",
+      "path": "../../../assets/props/nightmare-eye.svg",
       "type": "visual-prop",
       "redistributable": true,
       "licenceRef": "PROJECT-NIGHTMARE-ORIGINAL",
