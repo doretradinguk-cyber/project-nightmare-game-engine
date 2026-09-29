@@ -960,3 +960,21 @@ The visual target is substantially beyond retro/low-fidelity presentation. Retro
 8. Preserve Android/desktop adaptive quality.
 9. Keep multiplayer architecture capped at 8 players.
 10. Keep the system ready for supplied artwork and animations later.
+
+## Build milestone — Real 3D procedural Mansion renderer
+
+Completed after the asset-vault milestone:
+- Replaced the WebGL clear-screen placeholder with a real first-person WebGL renderer.
+- Procedural layout nodes now generate visible room volumes, floors, ceilings, walls, door openings and corridor architecture.
+- Corridors are open navigable spaces rather than solid placeholder boxes.
+- First-person WASD movement, mouse look, pointer lock, room detection and basic architectural collision are wired into the Mansion sandbox.
+- Seeded layout generation is loaded directly into the renderer; the sandbox exposes seed regeneration and live room/node status.
+- Power level is connected to the renderer's lighting response foundation.
+- Desktop/Android resolution profiles remain the rendering budget boundary.
+
+### Current honest status
+The engine now has a genuine navigable 3D procedural environment, but it is still an early renderer rather than a finished AAA visual pipeline. Next visual passes should add proper authored materials/textures, dynamic lights, shadows, decals, environmental props, atmospheric particles, surveillance hardware, asset-vault integration, multiplayer spawn logic and the Jester manifestation system.
+
+### Asset storage boundary
+The IndexedDB asset vault remains the local working database. It persists uploaded assets in the user's browser profile and exposes stable IDs/metadata for engine reuse. Cloud/server upload links are intentionally left as the next storage layer rather than pretending the local vault is already shared infrastructure.
+
