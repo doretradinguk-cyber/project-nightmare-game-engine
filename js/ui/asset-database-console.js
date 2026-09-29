@@ -113,7 +113,9 @@ export function mountAssetDatabaseConsole(root){
         <button class="console-button primary" id="db-connect">CONNECT SOURCE LIBRARY</button>
         <button class="console-button" id="db-files">INSERT FILES</button>
         <button class="console-button" id="db-folder">INSERT FOLDER</button>
+        <button class="console-button primary" id="db-archive">UPLOAD INTAKE ARCHIVE</button>
         <input id="db-file-input" type="file" multiple hidden>
+        <input id="db-archive-input" type="file" accept=".zip,.7z,.rar,.tar,.gz,.tgz,.tar.gz,application/zip,application/x-7z-compressed,application/x-rar-compressed" hidden>
         <label>SOURCE MODE<select id="db-source"><option value="AUTO">AUTO CLASSIFY</option><option value="00_ORIGINAL">ORIGINAL</option><option value="01_POLYHAVEN">POLYHAVEN</option><option value="02_KENNEY">KENNEY</option><option value="03_QUATERNIUS">QUATERNIUS</option><option value="04_BLENDER">BLENDER</option><option value="_DROPZONE">REVIEW / DROPZONE</option></select></label>
       </div>
       <div class="asset-dropbay" id="db-dropbay">
@@ -154,6 +156,34 @@ export function mountAssetDatabaseConsole(root){
     root.querySelector('#db-link').textContent='CONNECTED // WRITE';
     root.querySelector('#db-router').textContent='READY';
     addLog('SOURCE LIBRARY CONNECTED // REQUIRED FOLDERS VERIFIED');
+  }
+
+  async function ingestArchive(file){
+    if(!sourceRoot) throw new Error('Connect ASSET_SOURCE_LIBRARY first.');
+    if(!file) return;
+    const extension=ext(file.name);
+    const allowed=['zip','7z','rar','tar','gz','tgz'];
+    if(!allowed.includes(extension)) throw new Error('Unsupported archive format. Use ZIP or 7-Zip (.7z).');
+    queue=[{
+      name:file.name,
+      type:'INTAKE ARCHIVE',
+      confidence:'OPERATOR',
+      destination:'_DROPZONE/'+clean(file.name),
+      status:'READY FOR AI INTAKE'
+    }];
+    renderQueue();
+    root.querySelector('#db-router').textContent='ARCHIVE INTAKE';
+    root.querySelector('#db-progress').style.width='35%';
+    addLog('INTAKE ARCHIVE SELECTED // '+file.name);
+    await writeFile(sourceRoot,'_DROPZONE/'+clean(file.name),file);
+    root.querySelector('#db-progress').style.width='100%';
+    root.querySelector('#db-router').textContent='COMPLETE';
+    root.querySelector('#db-operation').textContent='ARCHIVE STAGED';
+    await writeText(sourceRoot,'_DROPZONE/asset-ingest-queue.json',JSON.stringify({
+      schemaVersion:1,generatedAt:new Date().toISOString(),purpose:'AI handover queue',
+      records:[{name:file.name,type:'INTAKE ARCHIVE',confidence:'OPERATOR',destination:'_DROPZONE/'+clean(file.name),status:'READY FOR AI INTAKE'}]
+    },null,2));
+    addLog('ARCHIVE STAGED // '+file.name+' -> ASSET_SOURCE_LIBRARY/_DROPZONE');
   }
 
   async function ingestFiles(files){
