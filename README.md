@@ -27,7 +27,7 @@ Game systems reference stable asset IDs rather than developer hard-drive paths. 
 See `assets/packs/README.md` and `docs/HANDOVER.md` for the current workflow and exact recovery point.
 
 ## Platform delivery direction
-Android Play Asset Delivery supports install-time, fast-follow and on-demand asset packs. citeturn0search2 Steam uses logical depots that are delivered and mounted separately, including DLC depots. citeturn0search0
+Android Play Asset Delivery supports install-time, fast-follow and on-demand asset packs (see Android Developers documentation). Steam uses logical depots that are delivered and mounted separately, including DLC depots (see Steamworks documentation).
 
 The current browser build deliberately uses ordinary folders/manifests first. Native Android/Windows packaging comes later, after the content contract is stable.
 
