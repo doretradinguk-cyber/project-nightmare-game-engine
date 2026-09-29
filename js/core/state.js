@@ -1,0 +1,1 @@
+export const state={currentPage:null,assets:[],sprites:[],animations:[],audio:[],text:[],rules:[],environment:'mansion'};

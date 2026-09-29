@@ -1,0 +1,1 @@
+import {boot} from './core/bootstrap.js';boot();

@@ -1,0 +1,1 @@
+export const routes={dashboard:'index.html',spriteMatrix:'pages/sprite-matrix.html',gameConsole:'pages/game-console.html',voiceScripting:'pages/voice-scripting.html',databaseAdmin:'pages/database-admin.html',dev:'pages/dev.html',sandbox:'pages/sandbox.html'};
