@@ -174,3 +174,40 @@ Repository source has been inspected and corrected. The live GitHub Pages browse
 **Commits:** 3c4ac2ad220a890f5f22b21ae3f879074867da28, af4889d7af846555a0f1c918238957fe81437439
 
 **Exact resume point:** refresh GitHub Pages after these commits and test DASHBOARD -> each console -> DASHBOARD, then test every console control. If the browser still shows the old static interface, inspect the deployed asset versions/cache rather than changing the design again.
+
+## Build log — 2026-09-29 — Live development page rebuild
+
+**Phase:** Dashboard-linked development pages — IMPLEMENTED ON FEATURE BRANCH
+
+### Problem corrected
+The previous implementation had a critical presentation error: the linked page HTML files loaded main.css but not nightmare.css. The shared Nightmare shell was therefore rendered without its intended shell styling, making the linked pages appear unlike the Dashboard. The previous interactive implementation also used overly thin demonstration controls.
+
+### Implemented
+- Added js/ui/module-workbench.js as the shared live workbench for Sprite Matrix, Game Console and Voice Scripting.
+- Added animated command decks, telemetry panels, live viewport, inspector, event log and module-specific controls.
+- Sprite Matrix now has sprite creation, real asset file import, play/stop state, animation timeline and intensity/signal controls.
+- Game Console now has engine boot, procedural seed generation, lockdown, event injection and a live procedural node map.
+- Voice Scripting now has a real script editor, persistent line count, browser speech preview, stop voice, rate/pitch controls and local save.
+- Added live Nightmare shell styling to the previously unstyled linked page HTML files.
+- Database & Admin Bridge and Dev Lab now inherit the same full Nightmare shell styling while retaining their existing functional consoles.
+- Existing Virtual Sandbox remains on its dedicated Three.js page.
+- The Dashboard remains the navigation hub.
+
+### Branch
+feature/live-page-consoles
+
+### Branch commits
+- 10f31f9a23890e6d2754af816fbd35c3a9ad222a — live module workbench
+- e9907736101dd1750c541c88b7f03f3ba7ba7840 — route core pages through live workbench
+- b40a4ddbda95df71fcd508647cd1ae3d4a9ee1e3 — Sprite Matrix shell stylesheet
+- 24743d25832cb8140ea362812bc32d69041e4d49 — Game Console shell stylesheet
+- e1d144316a22715b8c0f821c519210f81154c005 — Voice Scripting shell stylesheet
+- 26ab205d54d44226f6dd24e6523dec16d6fadcb1 — Database Admin shell stylesheet
+- f3474ccd17b864a33994516f55a5417d8fdfc7ce — Dev Lab shell stylesheet
+- 1624de1cc7a14ca68774ad859a4bfd30362ebcfa — live workbench visual system
+
+### Verification boundary
+Repository source has been inspected. Browser runtime execution and GitHub Pages visual verification are not available inside this session, so no claim is made that the deployed page has been visually tested here.
+
+### Exact next step
+Open the feature branch files through a browser/preview or merge the branch into main for GitHub Pages deployment. Then test every Dashboard link and every command button. Fix any runtime error found before starting the next major engine task.
