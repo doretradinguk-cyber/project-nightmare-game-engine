@@ -173,15 +173,18 @@ export class NightmareRenderer {
 
   #drawWorld(){
     const nodeMap=new Map(this.layout.nodes.map(n=>[n.id,n]));
+    const linked=new Map(this.layout.nodes.map(n=>[n.id,[]]));
+    for(const e of this.layout.edges){
+      if(linked.has(e.from)) linked.get(e.from).push(e.to);
+      if(linked.has(e.to)) linked.get(e.to).push(e.from);
+    }
     for(const node of this.layout.nodes){
       const size=node.type==='hub'?12:node.type==='gallery'?10:node.type==='destination'?11:8;
       const depth=node.type==='hub'?9:node.type==='hall'?5.5:7;
       this.#box(node.x,0,node.z,size,0.18,depth,[0.075,0.085,0.09]);
       this.#box(node.x,4.2,node.z,size,0.16,depth,[0.035,0.04,0.045]);
-      this.#wall(node.x-size/2,2.1,node.z,0.18,4.2,depth,[0.11,0.105,0.10]);
-      this.#wall(node.x+size/2,2.1,node.z,0.18,4.2,depth,[0.11,0.105,0.10]);
-      this.#wall(node.x,2.1,node.z-depth/2,size,4.2,0.18,[0.085,0.09,0.095]);
-      this.#wall(node.x,2.1,node.z+depth/2,size,4.2,0.18,[0.085,0.09,0.095]);
+      const neighbours=linked.get(node.id)||[];
+      this.#roomWalls(node,size,depth,neighbours,nodeMap);
       this.#doorMarker(node);
     }
     for(const edge of this.layout.edges){
@@ -195,21 +198,39 @@ export class NightmareRenderer {
     }
   }
 
-  #box(x,y,z,w,h,d,c){ this.#mesh(cuboid(w,h,d),translate(x,y,z)); }
-  #wall(x,y,z,w,h,d,c){ this.#mesh(cuboid(w,h,d),translate(x,y,z)); }
+  #box(x,y,z,w,h,d,c){ this.#mesh(cuboid(w,h,d),translate(x,y,z),c); }
+  #wall(x,y,z,w,h,d,c){ this.#mesh(cuboid(w,h,d),translate(x,y,z),c); }
+
+  #roomWalls(node,w,d,neighbours,nodeMap){
+    const has=(dx,dz)=>neighbours.some(id=>{
+      const n=nodeMap.get(id); return n&&Math.sign(n.x-node.x)===dx&&Math.sign(n.z-node.z)===dz;
+    });
+    const wall=[0.11,0.105,0.10], back=[0.085,0.09,0.095];
+    this.#wall(node.x-w/2,2.1,node.z,0.18,4.2,d,wall);
+    this.#wall(node.x+w/2,2.1,node.z,0.18,4.2,d,wall);
+    this.#openingWall(node.x,2.1,node.z-d/2,w,4.2,0.18,has(0,-1),back);
+    this.#openingWall(node.x,2.1,node.z+d/2,w,4.2,0.18,has(0,1),back);
+  }
+
+  #openingWall(x,y,z,w,h,t,opening,c){
+    if(!opening){ this.#wall(x,y,z,w,h,t,c); return; }
+    const gap=2.5, segment=(w-gap)/2;
+    if(segment>0){
+      this.#wall(x-(gap+segment)/2,y,z,segment,h,t,c);
+      this.#wall(x+(gap+segment)/2,y,z,segment,h,t,c);
+    }
+    this.#wall(x,y+h/2-0.18,z,gap,0.36,t,c);
+  }
 
   #corridor(a,b){
     const dx=b.x-a.x,dz=b.z-a.z,len=Math.hypot(dx,dz);
-    const angle=Math.atan2(dx,dz);
-    const mx=(a.x+b.x)/2,mz=(a.z+b.z)/2;
-    const w=3.2,h=3.7;
-    const model=multiply(translate(mx,1.85,mz),rotateY(angle));
-    this.#mesh(cuboid(w,h,len),model,[0.065,0.07,0.075]);
-    const sideOffset=2.0;
-    const left=multiply(translate(mx-sideOffset*Math.cos(angle),1.85,mz+sideOffset*Math.sin(angle)),rotateY(angle));
-    const right=multiply(translate(mx+sideOffset*Math.cos(angle),1.85,mz-sideOffset*Math.sin(angle)),rotateY(angle));
-    this.#mesh(cuboid(0.16,h,len),left,[0.10,0.095,0.09]);
-    this.#mesh(cuboid(0.16,h,len),right,[0.10,0.095,0.09]);
+    const angle=Math.atan2(dx,dz),mx=(a.x+b.x)/2,mz=(a.z+b.z)/2;
+    const width=3.2,height=3.7,sideOffset=width/2;
+    const base=multiply(translate(mx,0,mz),rotateY(angle));
+    this.#mesh(cuboid(width,0.18,len),multiply(base,translate(0,0.09,0)),[0.065,0.07,0.075]);
+    this.#mesh(cuboid(width,0.16,len),multiply(base,translate(0,height,0)),[0.035,0.04,0.045]);
+    this.#mesh(cuboid(0.16,height,len),multiply(base,translate(-sideOffset,height/2,0)),[0.10,0.095,0.09]);
+    this.#mesh(cuboid(0.16,height,len),multiply(base,translate(sideOffset,height/2,0)),[0.10,0.095,0.09]);
   }
 
   #doorMarker(n){
