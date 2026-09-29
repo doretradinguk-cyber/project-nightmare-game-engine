@@ -1,3 +1,5 @@
+import { getRecommendedResolution } from './platform.js';
+
 export class NightmareRenderer {
   constructor(canvas) {
     this.canvas = canvas;
@@ -6,9 +8,7 @@ export class NightmareRenderer {
   }
   resize() {
     if (!this.canvas) return;
-    const ratio = window.devicePixelRatio || 1;
-    const width = Math.max(1, Math.floor(this.canvas.clientWidth * ratio));
-    const height = Math.max(1, Math.floor(this.canvas.clientHeight * ratio));
+    const { width, height } = getRecommendedResolution(this.canvas);
     if (this.canvas.width !== width || this.canvas.height !== height) {
       this.canvas.width = width;
       this.canvas.height = height;

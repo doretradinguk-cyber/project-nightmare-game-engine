@@ -1,0 +1,17 @@
+{
+  "desktop": {
+    "pixelRatioCap": 2,
+    "dynamicLights": 6,
+    "particleBudget": 500,
+    "shadowQuality": "high",
+    "fog": "full"
+  },
+  "android": {
+    "pixelRatioCap": 1.5,
+    "dynamicLights": 2,
+    "particleBudget": 120,
+    "shadowQuality": "low",
+    "fog": "optimised",
+    "touchControls": true
+  }
+}
