@@ -9,6 +9,7 @@ export class SandboxExperience {
     this.eventActive = false;
     this.originalPower = runtime.power;
     this.buildAtmosphere();
+    this.buildSentinelEyes();
   }
 
   mat(color, roughness = .8, metalness = 0, emissive = 0x000000, ei = 0) {
@@ -104,6 +105,86 @@ export class SandboxExperience {
     scene.add(this.beacon);
   }
 
+  buildSentinelEyes() {
+    const loader = new THREE.TextureLoader();
+    const texture = loader.load('../assets/props/nightmare-eye.svg');
+    texture.colorSpace = THREE.SRGBColorSpace;
+    this.sentinelEyes = [];
+    const hub = this.r.layout.nodes.find(n => n.type === 'hub') || this.r.layout.nodes[0];
+    if (!hub) return;
+    const p = this.r.point(hub), d = this.r.dims(hub);
+    const specs = [
+      { side: -1, position: [p.x - d.w/2 + .09, 2.35, p.z], rotation: [0, Math.PI/2, 0], name: 'LEFT WALL EYE' },
+      { side: 1, position: [p.x + d.w/2 - .09, 2.35, p.z], rotation: [0, -Math.PI/2, 0], name: 'RIGHT WALL EYE' }
+    ];
+    for (const spec of specs) {
+      const group = new THREE.Group();
+      group.position.set(...spec.position);
+      group.rotation.set(...spec.rotation);
+      const frame = new THREE.Mesh(
+        new THREE.BoxGeometry(2.35, 1.45, .16),
+        this.mat(0x080a0a, .48, .25, 0x140000, .4)
+      );
+      frame.position.z = .02;
+      group.add(frame);
+      const eye = new THREE.Mesh(
+        new THREE.PlaneGeometry(2.1, 1.18),
+        new THREE.MeshBasicMaterial({map: texture, transparent: true, side: THREE.DoubleSide})
+      );
+      eye.position.z = .115;
+      group.add(eye);
+      const pupil = new THREE.Mesh(
+        new THREE.SphereGeometry(.16, 12, 8),
+        this.mat(0x050505, .25, .1, 0xff294d, 2.5)
+      );
+      pupil.position.set(0, 0, .17);
+      group.add(pupil);
+      const halo = new THREE.PointLight(0xff294d, .35, 4, 2);
+      halo.position.z = .3;
+      group.add(halo);
+      group.userData = {pupil,halo,baseZ:.17,locked:false,cooldown:0,name:spec.name};
+      this.r.world.add(group);
+      this.sentinelEyes.push(group);
+    }
+    this.sentinelStateKey = 'project-nightmare:sandbox:sentinel-eyes:v2';
+    this.sentinelState = JSON.parse(localStorage.getItem(this.sentinelStateKey) || '{"leftLocks":0,"rightLocks":0}');
+  }
+
+  updateSentinelEyes(dt) {
+    if (!this.sentinelEyes?.length) return;
+    const camera = this.r.camera;
+    const camPos = camera.position;
+    const forward = new THREE.Vector3(0,0,-1).applyQuaternion(camera.quaternion);
+    for (const eye of this.sentinelEyes) {
+      const u = eye.userData;
+      u.cooldown = Math.max(0, u.cooldown - dt);
+      const worldNormal = new THREE.Vector3(0,0,1).applyQuaternion(eye.quaternion);
+      const toEye = eye.position.clone().sub(camPos).normalize();
+      const visible = forward.dot(toEye) > .965;
+      const localTarget = eye.worldToLocal(camPos.clone());
+      const maxX = .34, maxY = .22;
+      const len = Math.hypot(localTarget.x, localTarget.y) || 1;
+      const scale = Math.min(1, .55 / len);
+      u.pupil.position.x = THREE.MathUtils.clamp(localTarget.x * scale, -maxX, maxX);
+      u.pupil.position.y = THREE.MathUtils.clamp(localTarget.y * scale, -maxY, maxY);
+      u.pupil.position.z = u.baseZ + Math.max(0, Math.min(.07, localTarget.z * .008));
+      u.halo.intensity = u.locked ? 1.8 + Math.sin(this.pulse*18)*.7 : .25 + Math.sin(this.pulse*3)*.08;
+      if (visible && u.cooldown <= 0 && !u.locked) {
+        u.locked = true;
+        u.cooldown = 1.8;
+        const key = eye.position.x < 0 ? 'leftLocks' : 'rightLocks';
+        this.sentinelState[key]++;
+        localStorage.setItem(this.sentinelStateKey, JSON.stringify(this.sentinelState));
+        this.hooks.status?.('SENTINELS LOCKED // STATE SAVED');
+        setTimeout(() => { u.locked = false; }, 520);
+      }
+      if (u.locked) {
+        const pulse = 1 + Math.sin(this.pulse*24)*.045;
+        eye.scale.set(pulse,pulse,1);
+      } else eye.scale.set(1,1,1);
+    }
+  }
+
   triggerEvent() {
     this.eventActive=true; this.eventTimer=0;
     this.hooks.status?.('NIGHTMARE EVENT // SIGNAL BREACH');
@@ -116,6 +197,7 @@ export class SandboxExperience {
 
   update(dt) {
     this.pulse+=dt;
+    this.updateSentinelEyes(dt);
     if(this.dust) this.dust.rotation.y+=dt*.006;
     if(this.beacon) this.beacon.intensity=2.2+Math.sin(this.pulse*5)*1.3;
     if(this.eventActive){
@@ -129,6 +211,7 @@ export class SandboxExperience {
 
   destroy(){
     this.dust?.geometry.dispose(); this.dust?.material.dispose();
+    for(const eye of this.sentinelEyes||[]) eye.removeFromParent();
     this.beacon?.removeFromParent();
   }
 }
