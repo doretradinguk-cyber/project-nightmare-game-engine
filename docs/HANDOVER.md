@@ -311,3 +311,33 @@ ASSET_SOURCE_LIBRARY/
 
 ### Next intake step
 For future uploads, place new source archives directly into `ASSET_SOURCE_LIBRARY/_DROPZONE/`, commit/push with GitHub Desktop, then run the AI intake pass. Source archives should remain intact until licence, provenance, hashes and contents have been verified.
+
+
+## Build log — 2026-09-29 — Epic Sandbox rebuild
+
+**Phase:** Virtual Sandbox / 3D Environment Proving Ground — IMPLEMENTED
+
+### Completed
+- Rebuilt the Virtual Sandbox around the existing Three.js procedural mansion renderer.
+- Added a dedicated immersive Sandbox experience layer with architectural dressing, ceiling panels, fluorescent fixtures, props, emergency guide lighting, dust particles and a distant red beacon.
+- Added live Nightmare event effects with signal-breach fog/pulse behaviour.
+- Added Sandbox controls for world regeneration, Nightmare event trigger, power cycle, camera reset and fullscreen.
+- Added live sector, seed, node count, power, signal and FPS telemetry.
+- Added procedural topology summary to the Sandbox HUD.
+- Fixed content catalogue resolution so manifests are resolved relative to the catalogue rather than incorrectly relative to the HTML page.
+- Made the old test GLTF optional instead of causing the Sandbox to report a content failure when that development-only asset is absent.
+- Fixed the Sandbox catalogue path from the page directory to the repository data directory.
+
+### Verification boundary
+The implementation has been inspected and committed on the feature branch. Browser/GitHub Pages visual execution is still required; this session cannot honestly claim a rendered visual test.
+
+### Exact next step
+Merge this Sandbox rebuild to main, then open GitHub Pages and test:
+1. initial world boot and CONTENT READY status;
+2. WASD + mouse movement;
+3. GENERATE WORLD;
+4. TRIGGER NIGHTMARE;
+5. POWER CYCLE;
+6. RESET VIEW;
+7. fullscreen;
+8. Dashboard navigation.
