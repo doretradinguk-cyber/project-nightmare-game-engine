@@ -3,16 +3,16 @@
 .sentinel-eyes{position:absolute;inset:0;z-index:6;pointer-events:none;overflow:hidden}.sentinel-eye{position:absolute;top:14%;width:150px;height:84px;transform:translateY(0);filter:drop-shadow(0 0 12px rgba(255,41,77,.22));transition:filter .18s,transform .18s}.sentinel-eye.left{left:18px}.sentinel-eye.right{right:18px}.sentinel-eye .eye-art{position:absolute;inset:0;background:url('../assets/props/nightmare-eye.svg') center/contain no-repeat}.sentinel-eye .pupil{position:absolute;left:50%;top:50%;width:25px;height:25px;margin:-12.5px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#f7f8f5 0 8%,#111 10% 45%,#ff294d 47% 62%,#030405 64%);box-shadow:0 0 10px #ff294d88;transform:translate(0,0);transition:transform .08s linear}.sentinel-eye .lid{position:absolute;inset:0;background:rgba(2,3,4,.96);clip-path:polygon(0 0,100% 0,100% 38%,50% 54%,0 38%);transform:scaleY(0);transform-origin:top;transition:transform .12s}.sentinel-eye.locked{filter:drop-shadow(0 0 18px rgba(114,255,98,.75));animation:eyeLock .42s steps(3)}.sentinel-eye.locked .pupil{box-shadow:0 0 16px #72ff62;background:radial-gradient(circle at 35% 30%,#fff 0 8%,#071008 10% 45%,#72ff62 47% 62%,#030405 64%)}.sentinel-eye.blink .lid{transform:scaleY(1)}.sentinel-eye.saved:after{content:"STATE SAVED";position:absolute;left:50%;top:calc(100% + 5px);transform:translateX(-50%);font:7px monospace;color:#72ff62;letter-spacing:.12em;white-space:nowrap;opacity:.8}@keyframes eyeLock{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-3px) scale(1.035)}}@media(max-width:800px){.sentinel-eye{width:112px;height:63px;top:12%}.sentinel-eye.left{left:7px}.sentinel-eye.right{right:7px}.sentinel-eye .pupil{width:20px;height:20px;margin:-10px}}
 /* PROJECT NIGHTMARE — SANDBOX UI SENTINELS — LOCKED */
 .ui-sentinel-pair{display:flex;align-items:center;gap:6px;margin-left:4px;padding:0 3px}
-.ui-sentinel-eye{position:relative;width:34px;height:22px;display:block;filter:drop-shadow(0 0 5px rgba(255,41,77,.22))}
+.ui-sentinel-eye{position:relative;width:22px;height:14px;display:block;filter:drop-shadow(0 0 5px rgba(255,41,77,.22))}
 .ui-sentinel-eye img{display:block;width:100%;height:100%;object-fit:contain}
-.ui-sentinel-eye:before{content:"";position:absolute;left:50%;top:50%;width:9px;height:9px;margin:-4.5px;border-radius:50%;background:#030405;box-shadow:0 0 5px rgba(255,41,77,.8);transform:translate(var(--pupil-x,0),var(--pupil-y,0));transition:transform .06s linear;z-index:2}
+.ui-sentinel-eye:before{content:"";position:absolute;left:50%;top:50%;width:6px;height:6px;margin:-3px;border-radius:50%;background:#030405;box-shadow:0 0 5px rgba(255,41,77,.8);transform:translate(var(--pupil-x,0),var(--pupil-y,0));transition:transform .06s linear;z-index:2}
 .ui-sentinel-eye:first-child{transform:scaleX(-1)}
-@media(max-width:800px){.ui-sentinel-eye{width:28px;height:18px}}
+@media(max-width:800px){.ui-sentinel-eye{width:19px;height:12px}}
 
 /* PROJECT NIGHTMARE — SANDBOX HEADING SENTINELS — LOCKED */
 .heading-sentinel-pair{display:inline-flex;vertical-align:middle;align-items:center;gap:3px;margin-right:7px;transform:translateY(-2px)}
-.heading-sentinel-eye{position:relative;width:38px;height:24px;display:block;filter:drop-shadow(0 0 6px rgba(255,41,77,.22))}
+.heading-sentinel-eye{position:relative;width:25px;height:16px;display:block;filter:drop-shadow(0 0 6px rgba(255,41,77,.22))}
 .heading-sentinel-eye img{display:block;width:100%;height:100%;object-fit:contain}
-.heading-sentinel-eye:before{content:"";position:absolute;left:50%;top:50%;width:9px;height:9px;margin:-4.5px;border-radius:50%;background:#030405;box-shadow:0 0 5px rgba(255,41,77,.8);transform:translate(var(--pupil-x,0),var(--pupil-y,0));transition:transform .06s linear;z-index:2}
+.heading-sentinel-eye:before{content:"";position:absolute;left:50%;top:50%;width:6px;height:6px;margin:-4.5px;border-radius:50%;background:#030405;box-shadow:0 0 5px rgba(255,41,77,.8);transform:translate(var(--pupil-x,0),var(--pupil-y,0));transition:transform .06s linear;z-index:2}
 .heading-sentinel-eye:first-child{transform:scaleX(-1)}
-@media(max-width:800px){.heading-sentinel-eye{width:30px;height:19px}}
+@media(max-width:800px){.heading-sentinel-eye{width:21px;height:13px}}
