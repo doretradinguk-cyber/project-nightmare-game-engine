@@ -15,7 +15,10 @@
 </header>
 <section class="sandbox-console">
 <div class="sandbox-toolbar">
-<button id="generate">🌍 GENERATE WORLD</button><button id="event">👻 TRIGGER NIGHTMARE</button><button id="power">⚡ POWER CYCLE</button><button id="reset">↺ RESET VIEW</button><button id="fullscreen">⛶ FULLSCREEN</button><span id="status">BOOTING...</span>
+<button id="generate">🌍 GENERATE WORLD</button><button id="event">👻 TRIGGER NIGHTMARE</button><button id="power">⚡ POWER CYCLE</button><button id="reset">↺ RESET VIEW</button><button id="fullscreen">⛶ FULLSCREEN</button><span class="ui-sentinel-pair" aria-hidden="true">
+<span class="ui-sentinel-eye" id="uiEyeLeft"><img src="../assets/props/nightmare-eye.svg" alt=""></span>
+<span class="ui-sentinel-eye" id="uiEyeRight"><img src="../assets/props/nightmare-eye.svg" alt=""></span>
+</span><span id="status">BOOTING...</span>
 </div>
 <div class="sandbox-stage">
 <canvas id="sandbox-canvas" aria-label="Project Nightmare first-person 3D sandbox"></canvas>
@@ -36,6 +39,14 @@
 import { bootMansion } from '../js/engine/mansion-bootstrap.js';
 import { SandboxExperience } from '../js/engine/sandbox-experience.js';
 const $=id=>document.getElementById(id); let runtime=null,effect=null,powerOn=true,last=performance.now(),frames=0,fps=0;
+const uiEyes=[$('uiEyeLeft'),$('uiEyeRight')];
+window.addEventListener('mousemove',e=>{
+ const x=(e.clientX/window.innerWidth-.5)*2, y=(e.clientY/window.innerHeight-.5)*2;
+ uiEyes.forEach((eye,i)=>{
+   const max=7, ox=x*max*(i===0?1:-1), oy=y*max;
+   eye.style.setProperty('--eye-x',ox+'px'); eye.style.setProperty('--eye-y',oy+'px');
+ });
+});
 function status(s){$('status').textContent=s;$('signal').textContent=s.includes('BREACH')?'BREACH':s.includes('STABLE')?'STABLE':'ONLINE'}
 async function load(seed=Date.now()){
  if(runtime) runtime.destroy(); effect=null;
