@@ -66,3 +66,8 @@
 .terminal-progress span{display:block;width:0;height:100%;background:#72ff62;transition:width .12s linear;box-shadow:0 0 8px rgba(114,255,98,.45)}
 .terminal-progress-wrap strong{min-width:42px;text-align:right;color:#d7d9d5;font:700 11px monospace}
 .terminal-progress-stage{margin-top:5px;color:#72ff62;font:9px monospace;letter-spacing:.08em}
+
+/* BACKGROUND CODE RAIN — subdued behind working consoles */
+.code-rain,.matrix-rain,.code-rain-layer,.rain-layer{font-size:8px !important;line-height:1.05 !important;letter-spacing:.04em !important;opacity:.22;}
+.code-rain span,.matrix-rain span,.code-rain-layer span,.rain-layer span{display:block;transform:scaleY(.78);transform-origin:top center;}
+@media(max-width:900px){.code-rain,.matrix-rain,.code-rain-layer,.rain-layer{font-size:7px !important;opacity:.18;}}
