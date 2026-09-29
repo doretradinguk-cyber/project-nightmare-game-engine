@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 180" role="img" aria-label="Project Nightmare eye">
+<defs>
+ <radialGradient id="s" cx="50%" cy="50%" r="60%"><stop offset="0" stop-color="#eef2ef"/><stop offset=".72" stop-color="#aeb7b4"/><stop offset="1" stop-color="#3b4142"/></radialGradient>
+ <radialGradient id="i"><stop offset="0" stop-color="#020303"/><stop offset=".48" stop-color="#111516"/><stop offset=".72" stop-color="#ff294d"/><stop offset="1" stop-color="#090b0c"/></radialGradient>
+</defs>
+<path d="M12 90Q160 4 308 90Q160 176 12 90Z" fill="#080b0c" stroke="#697274" stroke-width="5"/>
+<ellipse cx="160" cy="90" rx="106" ry="65" fill="url(#s)" stroke="#252a2b" stroke-width="6"/>
+<circle cx="160" cy="90" r="43" fill="url(#i)"/>
+<circle cx="146" cy="75" r="10" fill="#f4f6f3" opacity=".72"/>
+</svg>
