@@ -20,6 +20,7 @@
 <div class="sandbox-stage">
 <canvas id="sandbox-canvas" aria-label="Project Nightmare first-person 3D sandbox"></canvas>
 <div class="reticle"></div>
+<div class="sentinel-eyes" aria-label="Nightmare sentinel eyes"><div class="sentinel-eye left" data-eye="left"><div class="eye-art"></div><div class="pupil"></div><div class="lid"></div></div><div class="sentinel-eye right" data-eye="right"><div class="eye-art"></div><div class="pupil"></div><div class="lid"></div></div></div>
 <div class="scanline"></div>
 <div class="hud hud-left"><span>📍 SECTOR <b id="sector">HUB</b></span><span>🎲 SEED <b id="seed">—</b></span><span>🧩 NODES <b id="nodes">—</b></span></div>
 <div class="hud hud-right"><span>⚡ POWER <b id="powerReadout">68%</b></span><span>📡 SIGNAL <b id="signal">STABLE</b></span><span>🎞️ FPS <b id="fps">—</b></span></div>
@@ -36,6 +37,32 @@
 import { bootMansion } from '../js/engine/mansion-bootstrap.js';
 import { SandboxExperience } from '../js/engine/sandbox-experience.js';
 const $=id=>document.getElementById(id); let runtime=null,effect=null,powerOn=true,last=performance.now(),frames=0,fps=0;
+const eyeStateKey='project-nightmare:sandbox:sentinel-eyes:v1';
+const eyeState=JSON.parse(localStorage.getItem(eyeStateKey)||'{"locked":0,"visits":0}');
+eyeState.visits++;
+localStorage.setItem(eyeStateKey,JSON.stringify(eyeState));
+const eyes=[...document.querySelectorAll('.sentinel-eye')];
+function trackEyes(e){
+  const rect=$('sandbox-canvas').getBoundingClientRect();
+  const mx=(e.clientX-rect.left)/rect.width, my=(e.clientY-rect.top)/rect.height;
+  eyes.forEach(eye=>{
+    const er=eye.getBoundingClientRect(), cx=er.left+er.width/2, cy=er.top+er.height/2;
+    const dx=e.clientX-cx,dy=e.clientY-cy,len=Math.hypot(dx,dy)||1,max=18;
+    eye.querySelector('.pupil').style.transform=`translate(${(dx/len)*Math.min(max,len/12)}px,${(dy/len)*Math.min(max,len/12)}px)`;
+    const near=Math.hypot(e.clientX-cx,e.clientY-cy)<Math.max(er.width,er.height)*.55;
+    if(near&&!eye.classList.contains('locked')){
+      eye.classList.add('locked','saved');
+      eyeState.locked++;
+      localStorage.setItem(eyeStateKey,JSON.stringify(eyeState));
+      setTimeout(()=>eye.classList.remove('locked'),450);
+      setTimeout(()=>eye.classList.remove('saved'),1600);
+    }
+  });
+}
+$('sandbox-canvas').addEventListener('mousemove',trackEyes);
+$('sandbox-canvas').addEventListener('mouseleave',()=>eyes.forEach(e=>e.classList.add('blink')));
+$('sandbox-canvas').addEventListener('mouseenter',()=>eyes.forEach(e=>e.classList.remove('blink')));
+setInterval(()=>eyes.forEach(e=>{if(Math.random()<.16){e.classList.add('blink');setTimeout(()=>e.classList.remove('blink'),180)}}),2400);
 function status(s){$('status').textContent=s;$('signal').textContent=s.includes('BREACH')?'BREACH':s.includes('STABLE')?'STABLE':'ONLINE'}
 async function load(seed=Date.now()){
  if(runtime) runtime.destroy(); effect=null;
