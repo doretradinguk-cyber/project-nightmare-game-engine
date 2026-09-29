@@ -206,20 +206,26 @@ export class NightmareRenderer {
       const n=nodeMap.get(id); return n&&Math.sign(n.x-node.x)===dx&&Math.sign(n.z-node.z)===dz;
     });
     const wall=[0.11,0.105,0.10], back=[0.085,0.09,0.095];
-    this.#wall(node.x-w/2,2.1,node.z,0.18,4.2,d,wall);
-    this.#wall(node.x+w/2,2.1,node.z,0.18,4.2,d,wall);
-    this.#openingWall(node.x,2.1,node.z-d/2,w,4.2,0.18,has(0,-1),back);
-    this.#openingWall(node.x,2.1,node.z+d/2,w,4.2,0.18,has(0,1),back);
+    this.#openingWall(node.x-w/2,2.1,node.z,d,4.2,0.18,has(-1,0),wall,true);
+    this.#openingWall(node.x+w/2,2.1,node.z,d,4.2,0.18,has(1,0),wall,true);
+    this.#openingWall(node.x,2.1,node.z-d/2,w,4.2,0.18,has(0,-1),back,false);
+    this.#openingWall(node.x,2.1,node.z+d/2,w,4.2,0.18,has(0,1),back,false);
   }
 
-  #openingWall(x,y,z,w,h,t,opening,c){
+  #openingWall(x,y,z,w,h,t,opening,c,vertical){
     if(!opening){ this.#wall(x,y,z,w,h,t,c); return; }
     const gap=2.5, segment=(w-gap)/2;
     if(segment>0){
-      this.#wall(x-(gap+segment)/2,y,z,segment,h,t,c);
-      this.#wall(x+(gap+segment)/2,y,z,segment,h,t,c);
+      if(vertical){
+        this.#wall(x,y,z-(gap+segment)/2,t,h,segment,c);
+        this.#wall(x,y,z+(gap+segment)/2,t,h,segment,c);
+      }else{
+        this.#wall(x-(gap+segment)/2,y,z,segment,h,t,c);
+        this.#wall(x+(gap+segment)/2,y,z,segment,h,t,c);
+      }
     }
-    this.#wall(x,y+h/2-0.18,z,gap,0.36,t,c);
+    if(vertical) this.#wall(x,y+h/2-0.18,z,t,0.36,gap,c);
+    else this.#wall(x,y+h/2-0.18,z,gap,0.36,t,c);
   }
 
   #corridor(a,b){
@@ -256,7 +262,7 @@ export class NightmareRenderer {
     for(const e of layout.edges){
       const a=nodeMap.get(e.from),b=nodeMap.get(e.to); if(!a||!b) continue;
       const dx=b.x-a.x,dz=b.z-a.z,len=Math.hypot(dx,dz);
-      this.colliders.push({x:(a.x+b.x)/2,z:(a.z+b.z)/2,w:Math.max(3,len-0.6),d:Math.max(3,len-0.6),room:a.id,corridor:true});
+      this.colliders.push({x:(a.x+b.x)/2,z:(a.z+b.z)/2,w:Math.abs(dx)>Math.abs(dz)?Math.max(3,len-0.6):3,d:Math.abs(dz)>Math.abs(dx)?Math.max(3,len-0.6):3,room:a.id,corridor:true});
     }
   }
 
