@@ -365,3 +365,45 @@ The user reports the Sandbox screen appears but the world does not load. This sy
 
 ### Exact next step
 Hard-refresh the Sandbox and verify: WORLD ONLINE, visible 3D mansion, WASD/mouse movement, then GENERATE WORLD / NIGHTMARE / POWER CYCLE. After that, wire and test every navigation tab end-to-end.
+
+## HANDOVER — 2026-09-29 — MACHINE RESTART
+
+### Current state
+- Project Nightmare repository: `doretradinguk-cyber/project-nightmare-game-engine`
+- Sandbox screen loads, but the 3D world previously did not boot.
+- Root cause identified: invalid JavaScript syntax in `pages/sandbox.html` POWER CYCLE handler: `powerOn?.68:.12`.
+- Fixed to `powerOn ? .68 : .12`.
+- Sandbox boot fix commit: `b0ff9cf4b5c80d820a372f5669d9a010f2408228`.
+- Handover update commit: `6f1b5415354700265a048b86e52e19c68f0616df`.
+- Earlier renderer boot fix: `384e2fd03ab6e3ae90f35fb5b26d78fb6708b5` added `getPlatformProfile()` to `js/engine/platform.js`.
+
+### User verification still required
+After restarting the machine, open GitHub Pages Sandbox and perform a hard refresh (Ctrl+F5). Confirm whether the 3D mansion appears and the status reaches `WORLD ONLINE // CONTENT READY`.
+
+### Sandbox tests
+1. WASD movement
+2. Mouse look
+3. Shift sprint
+4. GENERATE WORLD
+5. TRIGGER NIGHTMARE
+6. POWER CYCLE
+7. RESET VIEW
+8. FULLSCREEN
+
+### Navigation status
+- Dashboard navigation tabs visually light up but are not yet considered complete end-to-end functionality.
+- User specifically reported that the tabs light up but do not work yet.
+- Do NOT claim the tabs are complete until each route/control has been browser-tested.
+- After Sandbox boot is confirmed, next task is to wire/test the dashboard tabs and all navigation routes properly.
+
+### Mobile target
+- Android is a first-class target, not a later port.
+- Current Android profile caps pixel ratio at 1.5, disables/reduces shadows, targets a 120-particle budget and limits dynamic lights.
+- Desktop uses the higher-quality profile.
+- Native Android Gradle/Play Asset Delivery wrapper is not yet built.
+
+### Working rule for next session
+Do not move on to another major engine feature until the Sandbox boot is visually confirmed by the user and the navigation tabs are made genuinely functional. Keep updating this HANDOVER after substantial fixes.
+
+### Exact resume point
+Start by checking the Sandbox after Ctrl+F5. If it still fails, inspect the browser-visible status/error and the module boot path before changing the architecture. If it loads, test the controls, then fix the navigation tabs.
