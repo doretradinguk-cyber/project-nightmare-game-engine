@@ -131,3 +131,22 @@ The browser cannot silently write to the user's Git repository or hard drive. Th
 
 ### Next step
 Connect the classified source records to the asset catalogue/licence verification pipeline, then add the controller abstraction layer for Xbox and PlayStation gamepads.
+
+
+## Build log — 2026-09-29 — Interactive Dashboard Shell
+
+**Phase:** Dashboard / Page Interaction — COMPLETE
+
+- Persistent dashboard navigation is now present across the page shell.
+- Removed generic placeholder panels from Sprite Matrix, Game Console and Voice Scripting.
+- Added working interactive console controls and quick links to connected systems.
+- Database & Admin Bridge remains connected to the real Asset Database Console.
+- Dev Lab remains connected to its existing tooling.
+- Virtual Sandbox retains its real 3D renderer and now has the same dashboard navigation.
+- Dashboard cards now explicitly invite users to open the relevant console.
+
+**Commits:** f86b4c69fe8bb923412393795b69865ed7168d7f, 2e11a33606048cadd4ac2aed9298e4f7cc1b374a, 4b6196ec0357452cd592d69ecc3884c8444f20ae, 5ee2dcc2367e80848d41f0767ace0dc0264a4705
+
+**Verification boundary:** Changes are committed to main. Browser UI execution was not available in this session, so visual verification still needs to be performed through the GitHub Pages deployment.
+
+**Next step:** connect the interactive consoles to their real engine/database services instead of demonstration actions, while preserving the common navigation shell.
