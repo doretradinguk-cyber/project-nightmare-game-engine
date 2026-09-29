@@ -250,7 +250,13 @@ export class NightmareRenderer {
     for(const n of layout.nodes){
       const size=n.type==='hub'?12:n.type==='gallery'?10:n.type==='destination'?11:8;
       const depth=n.type==='hub'?9:n.type==='hall'?5.5:7;
-      this.colliders.push({x:n.x,z:n.z,w:size-0.35,d:depth-0.35,room:n.id});
+      this.colliders.push({x:n.x,z:n.z,w:size-0.45,d:depth-0.45,room:n.id});
+    }
+    const nodeMap=new Map(layout.nodes.map(n=>[n.id,n]));
+    for(const e of layout.edges){
+      const a=nodeMap.get(e.from),b=nodeMap.get(e.to); if(!a||!b) continue;
+      const dx=b.x-a.x,dz=b.z-a.z,len=Math.hypot(dx,dz);
+      this.colliders.push({x:(a.x+b.x)/2,z:(a.z+b.z)/2,w:Math.max(3,len-0.6),d:Math.max(3,len-0.6),room:a.id,corridor:true});
     }
   }
 
