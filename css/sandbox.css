@@ -4,6 +4,7 @@
 /* UI SENTINEL TEST — temporary visual pass */
 .ui-sentinel-pair{display:flex;align-items:center;gap:6px;margin-left:4px;padding:0 3px}
 .ui-sentinel-eye{position:relative;width:34px;height:22px;display:block;filter:drop-shadow(0 0 5px rgba(255,41,77,.22))}
-.ui-sentinel-eye img{display:block;width:100%;height:100%;object-fit:contain;transform:translate(var(--eye-x,0),var(--eye-y,0));transition:transform .06s linear}
+.ui-sentinel-eye img{display:block;width:100%;height:100%;object-fit:contain}
+.ui-sentinel-eye:before{content:"";position:absolute;left:50%;top:50%;width:9px;height:9px;margin:-4.5px;border-radius:50%;background:#030405;box-shadow:0 0 5px rgba(255,41,77,.8);transform:translate(var(--pupil-x,0),var(--pupil-y,0));transition:transform .06s linear;z-index:2}
 .ui-sentinel-eye:first-child{transform:scaleX(-1)}
 @media(max-width:800px){.ui-sentinel-eye{width:28px;height:18px}}
