@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 40" shape-rendering="crispEdges">
+<rect width="32" height="40" fill="none"/>
+<!-- original angular hat -->
+<path fill="#111516" d="M7 7h5V3h8v4h5v5h-3v3h-2v2h-8v-2h-2v-3H7z"/>
+<path fill="#72ff62" d="M12 5h2v4h-2zM20 5h2v4h-2z"/>
+<path fill="#171b1d" d="M10 14h12v4h3v8h-3v5h-2v5H12v-5h-2v-5H7v-8h3z"/>
+<!-- face -->
+<path fill="#d7d9d5" d="M12 16h8v2h3v6h-3v3h-8v-3H9v-6h3z"/>
+<path fill="#030405" d="M12 18h3v3h-3zM17 18h3v3h-3z"/>
+<path fill="#ff294d" d="M12 23h8v2h-2v2h-4v-2h-2z"/>
+<!-- coat -->
+<path fill="#15191a" d="M10 27h12l4 8h-6v4h-8v-4H6z"/>
+<path fill="#72ff62" d="M10 28h4v8h-4z"/>
+<path fill="#ff294d" d="M18 28h4v8h-4z"/>
+<!-- hands -->
+<path fill="#d7d9d5" d="M4 31h4v3H4zM24 31h4v3h-4z"/>
+</svg>
