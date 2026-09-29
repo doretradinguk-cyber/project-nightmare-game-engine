@@ -48,7 +48,7 @@ async function load(seed=Date.now()){
  try{await runtime.ready;status('WORLD ONLINE // CONTENT READY')}catch(e){console.error(e);status('CONTENT WARNING // PROCEDURAL WORLD STILL ONLINE')}
 }
 $('generate').onclick=()=>load(Date.now()); $('event').onclick=()=>effect?.triggerEvent();
-$('power').onclick=()=>{powerOn=!powerOn;effect?.setPower(powerOn?.68:.12);status(powerOn?'POWER RESTORED // STABLE':'POWER FAILURE // EMERGENCY LIGHTING')};
+$('power').onclick=()=>{powerOn=!powerOn;effect?.setPower(powerOn ? .68 : .12);status(powerOn?'POWER RESTORED // STABLE':'POWER FAILURE // EMERGENCY LIGHTING')};
 $('reset').onclick=()=>{if(!runtime)return;const n=runtime.layout.nodes.find(x=>x.type==='hub')||runtime.layout.nodes[0],p=runtime.renderer.point(n);runtime.renderer.camera.position.set(p.x,1.72,p.z+4);runtime.renderer.yaw=Math.PI;runtime.renderer.pitch=0};
 $('fullscreen').onclick=()=>document.querySelector('.sandbox-stage').requestFullscreen?.();
 setInterval(()=>{if(runtime){$('sector').textContent=runtime.getRoom().toUpperCase();frames++;const now=performance.now();if(now-last>1000){fps=frames*1000/(now-last);frames=0;last=now;$('fps').textContent=Math.round(fps)}}},200);
