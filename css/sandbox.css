@@ -8,3 +8,11 @@
 .ui-sentinel-eye:before{content:"";position:absolute;left:50%;top:50%;width:9px;height:9px;margin:-4.5px;border-radius:50%;background:#030405;box-shadow:0 0 5px rgba(255,41,77,.8);transform:translate(var(--pupil-x,0),var(--pupil-y,0));transition:transform .06s linear;z-index:2}
 .ui-sentinel-eye:first-child{transform:scaleX(-1)}
 @media(max-width:800px){.ui-sentinel-eye{width:28px;height:18px}}
+
+/* Heading sentinel test */
+.heading-sentinel-pair{display:inline-flex;vertical-align:middle;align-items:center;gap:3px;margin-right:7px;transform:translateY(-2px)}
+.heading-sentinel-eye{position:relative;width:38px;height:24px;display:block;filter:drop-shadow(0 0 6px rgba(255,41,77,.22))}
+.heading-sentinel-eye img{display:block;width:100%;height:100%;object-fit:contain}
+.heading-sentinel-eye:before{content:"";position:absolute;left:50%;top:50%;width:9px;height:9px;margin:-4.5px;border-radius:50%;background:#030405;box-shadow:0 0 5px rgba(255,41,77,.8);transform:translate(var(--pupil-x,0),var(--pupil-y,0));transition:transform .06s linear;z-index:2}
+.heading-sentinel-eye:first-child{transform:scaleX(-1)}
+@media(max-width:800px){.heading-sentinel-eye{width:30px;height:19px}}
