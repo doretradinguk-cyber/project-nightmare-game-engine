@@ -101,3 +101,33 @@ At the end of every substantial build phase update this file with phase/status, 
 No claim is made that the browser UI or Android build has been physically executed in this session. The implementation has been committed to GitHub; runtime/browser and physical-device testing remain explicit follow-up tasks.
 
 GitHub records commits as identifiable snapshots with unique commit IDs, making this handover suitable for recovering the exact development sequence. citeturn0search0turn0search3
+
+
+## Build log — 2026-09-29 — Asset Database Console
+
+**Phase:** Database & Admin Bridge / Asset Source Intake Console — IMPLEMENTED
+
+### Completed
+- Replaced the generic Database & Admin Bridge placeholder with a dedicated Asset Database Console UI.
+- Added animated CRT-style digital console screen and physical-style floppy-drive housing.
+- Added local ASSET_SOURCE_LIBRARY connection control using the browser File System Access API.
+- Added file insertion, folder insertion and drag/drop intake controls.
+- Added automatic source/type routing into the Project Nightmare asset-source structure.
+- Added an AI-ready _DROPZONE/asset-ingest-queue.json manifest describing routed assets and classification confidence.
+- Originals are copied, not transformed or deleted during intake.
+- Added responsive console styling for desktop and smaller screens.
+
+### Routing model
+- Poly Haven -> 01_POLYHAVEN/ with model/material/HDRI/licence routing.
+- Kenney -> 02_KENNEY/ with model/texture/audio/licence routing.
+- Quaternius -> 03_QUATERNIUS/.
+- Blender -> 04_BLENDER/.
+- Project originals -> 00_ORIGINAL/.
+- Unrecognised sources -> _DROPZONE/ for review.
+- The operator can override source classification from the console.
+
+### Important boundary
+The browser cannot silently write to the user's Git repository or hard drive. The operator must explicitly select the local ASSET_SOURCE_LIBRARY folder and grant read/write access. The File System Access API requires a supporting secure browser context and user activation. The console therefore performs real local staging after permission is granted; it does not pretend to have direct GitHub filesystem access.
+
+### Next step
+Connect the classified source records to the asset catalogue/licence verification pipeline, then add the controller abstraction layer for Xbox and PlayStation gamepads.
