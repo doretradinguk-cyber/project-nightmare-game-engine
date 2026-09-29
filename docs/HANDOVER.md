@@ -224,3 +224,27 @@ The live page rebuild from feature branch `feature/live-page-consoles` was merge
 **Result:** Sprite Matrix, Game Console and Voice Scripting now use the shared live workbench. Database & Admin Bridge and Dev Lab now load the full Nightmare shell stylesheet. Virtual Sandbox remains the real Three.js environment route.
 
 **Verification boundary:** The repository state is confirmed on main. GitHub Pages/browser runtime has not been visually executed by this session, so the next user-side check is the deployed page itself. If the deployed page is stale, perform a hard refresh and allow GitHub Pages to update before judging the new interface.
+
+
+## Build log — 2026-09-29 — Intake Archive Upload
+
+**Phase:** Asset Database Console / Bulk Intake Archive — IMPLEMENTED
+
+### Completed
+- Added a dedicated **UPLOAD INTAKE ARCHIVE** control to the Asset Database Console.
+- Added archive file selection for ZIP, 7-Zip (.7z), RAR, TAR and common compressed archive formats.
+- The selected archive is copied intact into the connected local ASSET_SOURCE_LIBRARY/_DROPZONE/ folder.
+- The original archive is not extracted, renamed beyond filesystem-safe characters, optimised or deleted.
+- The console writes/refreshes _DROPZONE/asset-ingest-queue.json with the archive marked READY FOR AI INTAKE.
+- Existing individual file/folder intake remains unchanged.
+
+### Intended workflow
+Download source packages -> keep their original archives -> optionally place them together in one 7-Zip/ZIP intake archive -> connect the local ASSET_SOURCE_LIBRARY folder in the console -> UPLOAD INTAKE ARCHIVE -> archive lands in _DROPZONE -> later AI/catalogue/licence pipeline inspects and distributes its contents.
+
+### Important boundary
+This button writes to the local folder explicitly selected by the operator through the browser File System Access API. It does not directly upload binary archives into GitHub from the browser. GitHub remains the versioned project repository; the local Asset Source Library is the master intake location.
+
+**Commit:** a8357b40ebe820e42c14ccbe183b5635f7777cda
+
+### Verification boundary
+The source implementation has been committed and inspected. Browser runtime execution has not been performed inside this session, so the deployed console still requires a user-side click test: connect ASSET_SOURCE_LIBRARY, choose UPLOAD INTAKE ARCHIVE, select the .7z/.zip, and confirm the archive appears in _DROPZONE.
