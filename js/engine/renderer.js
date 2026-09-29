@@ -316,7 +316,7 @@ function look(c){
   const cp=Math.cos(c.pitch),sp=Math.sin(c.pitch),cy=Math.cos(c.yaw),sy=Math.sin(c.yaw);
   const fx=sy*cp,fy=sp,fz=cy*cp;
   const rx=Math.cos(c.yaw),rz=-Math.sin(c.yaw);
-  const ux=rz*fy,uy=rx*fy-0,uz=-rx*fy;
+  const ux=-sy*sp,uy=cp,uz=-cy*sp;
   const z=[-fx,-fy,-fz],x=[rx,0,rz],y=[ux,uy,uz];
   return [x[0],y[0],z[0],0,x[1],y[1],z[1],0,x[2],y[2],z[2],0,-(x[0]*c.x+x[1]*c.y+x[2]*c.z),-(y[0]*c.x+y[1]*c.y+y[2]*c.z),-(z[0]*c.x+z[1]*c.y+z[2]*c.z),1];
 }
