@@ -4,7 +4,7 @@
 
 **Asset-pack implementation commit:** `0a2df6a0b3f399c5bc225b694713685bc66ac361`
 
-**Current phase:** Content Manager Integration — IN PROGRESS
+**Current phase:** Content Manager Integration — COMPLETE
 
 ## Completed this phase
 - Content manager imported by the Mansion bootstrap.
@@ -23,6 +23,7 @@
 - [x] Content manager wired into Mansion bootstrap
 - [x] Local GLTF pack-resolution test asset
 - [x] Crash-safe handover record
+- [x] Integration commit pushed to `main`
 - [ ] Browser pack import/build tooling
 - [ ] SHA-256 build validation
 - [ ] Android build wrapper / Play Asset Delivery mapping
@@ -39,6 +40,10 @@
 5. The content manager currently resolves browser URLs. Native Android delivery will need a platform adapter that maps the same pack IDs to Play Asset Delivery locations.
 
 ## Exact resume point after a crash
+Integration commit: `01789a145485b0a7a3137bfc5e1b2b2ba3e92441`
+
+Sandbox follow-up commit: `921292c361abf7ad47e25a5fee8d6403599da8a3`
+
 NEXT STEP: add the browser pack import/build tooling, including explicit folder/file selection, manifest validation, redistribution checks and SHA-256 generation. Then map the logical Android pack names to Play Asset Delivery configuration.
 
 Android's current documentation defines install-time, fast-follow and on-demand asset pack delivery, and says downloaded pack locations should be checked on every launch rather than cached between launches. citeturn0search1turn0search4
