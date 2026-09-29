@@ -248,3 +248,21 @@ This button writes to the local folder explicitly selected by the operator throu
 
 ### Verification boundary
 The source implementation has been committed and inspected. Browser runtime execution has not been performed inside this session, so the deployed console still requires a user-side click test: connect ASSET_SOURCE_LIBRARY, choose UPLOAD INTAKE ARCHIVE, select the .7z/.zip, and confirm the archive appears in _DROPZONE.
+
+
+## Build log — 2026-09-29 — Visible Intake Progress Bar
+
+**Phase:** Asset Database Console / Upload Feedback — IMPLEMENTED
+
+### Completed
+- Replaced the ambiguous decorative progress indicator with a standard familiar loading bar.
+- Added a numeric percentage readout.
+- Added a current-stage label such as PREPARING, UPLOADING ARCHIVE, FINALISING and READY FOR AI INTAKE.
+- Archive uploads are now written in chunks so the bar reflects actual archive write progress rather than jumping from a guessed percentage to 100%.
+- Existing individual-file routing also updates the same visible progress bar.
+- Kept the visual treatment deliberately simple; the themed CRT/floppy "icing" can be enhanced later.
+
+**Commits:** 64760a255a7dc4d366c2477684957a16b98d7045, 7ace7be35b8018ee71bf2131403598c11f8a54d9
+
+### Verification boundary
+Source implementation has been committed and inspected. Browser runtime execution has not been performed in this session. User-side test should confirm that a real ZIP/7Z archive shows the bar moving from 0% to 100% while it is written into _DROPZONE.
