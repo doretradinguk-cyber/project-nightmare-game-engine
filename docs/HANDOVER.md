@@ -2,7 +2,9 @@
 
 **Updated:** 2026-09-29
 
-**Last implementation commit:** `0a2df6a0b3f399c5bc225b694713685bc66ac361`
+**Asset-pack implementation commit:** `0a2df6a0b3f399c5bc225b694713685bc66ac361`
+
+**Current main recovery head:** `41b77b27f85e72b7837e49276373f2d047311592`
 
 ## Current phase
 ### Asset Pack Foundation — IMPLEMENTED
