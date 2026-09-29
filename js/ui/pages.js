@@ -1,4 +1,5 @@
 import { mountDevLab } from './dev-lab.js';
+import { mountAssetDatabaseConsole } from './asset-database-console.js';
 
 const cards=[['sprite-matrix','SPRITE MATRIX','Sprites, animation layers & behaviour'],['game-console','GAME CONSOLE','Suemas / Ruby / Lewis engine control'],['voice-scripting','VOICE SCRIPTING','Narrator, TTS & audio laboratory'],['database-admin','DATABASE & ADMIN BRIDGE','Assets, pipeline, users & memos'],['dev','DEV PAGE','Visual authoring, assets & UI'],['sandbox','VIRTUAL SANDBOX','Nightmare environment testing']];
 
@@ -15,6 +16,11 @@ export function renderPage(page){
     return;
   }
 
-  const titles={'sprite-matrix':'SPRITE MATRIX','game-console':'GAME CONSOLE','voice-scripting':'VOICE SCRIPTING','database-admin':'DATABASE & ADMIN BRIDGE','sandbox':'VIRTUAL SANDBOX'};
+  if(page==='database-admin'){
+    mountAssetDatabaseConsole(r);
+    return;
+  }
+
+  const titles={'sprite-matrix':'SPRITE MATRIX','game-console':'GAME CONSOLE','voice-scripting':'VOICE SCRIPTING','sandbox':'VIRTUAL SANDBOX'};
   r.innerHTML='<section class="console-grid"><article class="console-panel"><header>'+titles[page]+' // PRIMARY CONSOLE</header><div>SYSTEM READY</div></article><article class="console-panel"><header>TOOLS / ASSETS</header><div>AWAITING MODULES</div></article></section>';
 }
