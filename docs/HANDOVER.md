@@ -211,3 +211,16 @@ Repository source has been inspected. Browser runtime execution and GitHub Pages
 
 ### Exact next step
 Open the feature branch files through a browser/preview or merge the branch into main for GitHub Pages deployment. Then test every Dashboard link and every command button. Fix any runtime error found before starting the next major engine task.
+
+
+## Build log — 2026-09-29 — Live development pages promoted
+
+**Phase:** Dashboard-linked development pages — MERGED TO MAIN
+
+The live page rebuild from feature branch `feature/live-page-consoles` was merged through PR #5.
+
+**Merge commit:** 80a2dc80911a01998d2958b5fa3fa1d8ed0005e5
+
+**Result:** Sprite Matrix, Game Console and Voice Scripting now use the shared live workbench. Database & Admin Bridge and Dev Lab now load the full Nightmare shell stylesheet. Virtual Sandbox remains the real Three.js environment route.
+
+**Verification boundary:** The repository state is confirmed on main. GitHub Pages/browser runtime has not been visually executed by this session, so the next user-side check is the deployed page itself. If the deployed page is stale, perform a hard refresh and allow GitHub Pages to update before judging the new interface.
