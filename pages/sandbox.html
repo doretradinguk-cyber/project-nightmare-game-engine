@@ -4,28 +4,15 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Project Nightmare // Virtual Sandbox</title>
-<link rel="stylesheet" href="../css/main.css">
-<link rel="stylesheet" href="../css/nightmare.css">
-<link rel="stylesheet" href="../css/sandbox.css">
+<link rel="stylesheet" href="../css/main.css"><link rel="stylesheet" href="../css/nightmare.css"><link rel="stylesheet" href="../css/sandbox.css">
 </head>
-<body data-page="sandbox">
-<div id="app"></div>
+<body data-page="sandbox"><div id="app"></div>
 <script type="module">
 import { bootMansion } from '../js/engine/mansion-bootstrap.js';
 const app=document.querySelector('#app');
-app.innerHTML=`<main class="nightmare-shell sandbox-view"><header class="nightmare-header"><small>PROJECT NIGHTMARE // ENVIRONMENT LAB</small><h1>VIRTUAL SANDBOX</h1><p>MANSION // PROCEDURAL 3D BUILD</p></header><section class="sandbox-console"><div class="sandbox-toolbar"><button id="load">GENERATE MANSION</button><button id="new">NEW SEED</button><button id="fullscreen">FULLSCREEN</button><span id="status">STANDBY</span></div><canvas id="sandbox-canvas" aria-label="First-person procedural Mansion viewport"></canvas><aside><strong>SEED</strong><span id="seed">—</span><strong>ROOM</strong><span id="room">HUB</span><strong>POWER</strong><span id="power">68%</span><strong>PLAYERS</strong><span>1 / 8</span><strong>CONTROLS</strong><span>WASD + MOUSE</span></aside></section></main>`;
+app.innerHTML=`<main class="nightmare-shell sandbox-view"><header class="nightmare-header"><small>PROJECT NIGHTMARE // ENVIRONMENT LAB</small><h1>VIRTUAL SANDBOX</h1><p>THREE.JS // PBR-READY PROCEDURAL MANSION</p></header><section class="sandbox-console"><div class="sandbox-toolbar"><button id="load">GENERATE MANSION</button><button id="new">NEW SEED</button><button id="fullscreen">FULLSCREEN</button><span id="status">STANDBY</span></div><canvas id="sandbox-canvas" aria-label="First-person procedural Mansion viewport"></canvas><aside><strong>SEED</strong><span id="seed">—</span><strong>ROOM</strong><span id="room">HUB</span><strong>POWER</strong><span id="power">68%</span><strong>PLAYERS</strong><span>1 / 8</span><strong>RENDERER</strong><span>THREE.JS</span><strong>CONTROLS</strong><span>WASD + MOUSE</span></aside></section></main>`;
 let runtime=null;
-function load(seed=Date.now()){
- runtime?.destroy();
- runtime=bootMansion(document.querySelector('#sandbox-canvas'),{seed,maxPlayers:8});
- document.querySelector('#seed').textContent=runtime.seed;
- document.querySelector('#status').textContent=`3D WORLD ONLINE // ${runtime.layout.nodes.length} NODES // ${runtime.layout.edges.length} LINKS`;
-}
-document.querySelector('#load').addEventListener('click',()=>load());
-document.querySelector('#new').addEventListener('click',()=>load(Date.now()));
-document.querySelector('#fullscreen').addEventListener('click',()=>document.querySelector('#sandbox-canvas').requestFullscreen?.());
-setInterval(()=>{if(runtime) document.querySelector('#room').textContent=runtime.getRoom().toUpperCase();},200);
-load();
-</script>
-</body>
-</html>
+function load(seed=Date.now()){runtime?.destroy();runtime=bootMansion(document.querySelector('#sandbox-canvas'),{seed,maxPlayers:8});document.querySelector('#seed').textContent=runtime.seed;document.querySelector('#status').textContent=`3D WORLD ONLINE // ${runtime.layout.nodes.length} NODES // ${runtime.layout.edges.length} LINKS`;}
+document.querySelector('#load').addEventListener('click',()=>load());document.querySelector('#new').addEventListener('click',()=>load(Date.now()));document.querySelector('#fullscreen').addEventListener('click',()=>document.querySelector('#sandbox-canvas').requestFullscreen?.());
+setInterval(()=>{if(runtime)document.querySelector('#room').textContent=runtime.getRoom().toUpperCase()},200);load();
+</script></body></html>
