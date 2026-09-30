@@ -107,7 +107,7 @@ export class SandboxExperience {
 
   buildSentinelEyes() {
     const loader = new THREE.TextureLoader();
-    const texture = loader.load('../assets/props/nightmare-eye.svg');
+    const texture = loader.load('../../assets/props/nightmare-eye.svg');
     texture.colorSpace = THREE.SRGBColorSpace;
     this.sentinelEyes = [];
     const hub = this.r.layout.nodes.find(n => n.type === 'hub') || this.r.layout.nodes[0];
@@ -147,7 +147,7 @@ export class SandboxExperience {
       this.sentinelEyes.push(group);
     }
     this.sentinelStateKey = 'project-nightmare:sandbox:sentinel-eyes:v2';
-    this.sentinelState = JSON.parse(localStorage.getItem(this.sentinelStateKey) || '{"leftLocks":0,"rightLocks":0}');
+    try { this.sentinelState = JSON.parse(localStorage.getItem(this.sentinelStateKey) || '{"leftLocks":0,"rightLocks":0}'); } catch { this.sentinelState = {leftLocks:0,rightLocks:0}; }
   }
 
   updateSentinelEyes(dt) {
@@ -174,7 +174,7 @@ export class SandboxExperience {
         u.cooldown = 1.8;
         const key = eye.position.x < 0 ? 'leftLocks' : 'rightLocks';
         this.sentinelState[key]++;
-        localStorage.setItem(this.sentinelStateKey, JSON.stringify(this.sentinelState));
+        try { localStorage.setItem(this.sentinelStateKey, JSON.stringify(this.sentinelState)); } catch {}
         this.hooks.status?.('SENTINELS LOCKED // STATE SAVED');
         setTimeout(() => { u.locked = false; }, 520);
       }
