@@ -98,21 +98,35 @@ export function createLayout(seed = Date.now(), options = {}) {
     return node;
   };
 
-  // Give each wing a different architectural personality.
-  const wingAngles = shuffledDirections(random).slice(0, wings);
+  // Fixed arrival sequence: the lobby has one clear door into the mansion.
+  const entryDirIndex = 0;
+  const entryDir = DIRECTIONS[entryDirIndex];
+  const mansionEntrance = addNode(entryDir.x * 2, entryDir.z * 2, 'grand-hall', 1, 1);
+  if (mansionEntrance) {
+    mansionEntrance.id = 'mansion-entrance';
+    mansionEntrance.fixed = true;
+    mansionEntrance.dressing = 'entry-hall';
+    mansionEntrance.trap = 'none';
+    edges.push({ from: lobby.id, to: mansionEntrance.id, kind: 'mansion-entry', width: 3.6 });
+  }
+
+  // Procedural wings begin beyond the entrance. The lobby is never connected to random rooms.
+  const wingAngles = shuffledDirections(random)
+    .filter(i => i !== entryDirIndex)
+    .slice(0, Math.max(1, wings - 1));
 
   wingAngles.forEach((dirIndex, wingIndex) => {
     const d = DIRECTIONS[dirIndex];
-    let x = d.x * 2;
-    let z = d.z * 2;
-    let previous = lobby;
+    let x = entryDir.x * 2 + d.x * 2;
+    let z = entryDir.z * 2 + d.z * 2;
+    let previous = mansionEntrance || lobby;
 
     for (let depth = 0; depth < roomsPerWing; depth += 1) {
       const archetype = depth === roomsPerWing - 1
         ? pickDestination(random)
         : weightedArchetype(random);
 
-      const node = addNode(x, z, archetype, wingIndex + 1, depth + 1);
+      const node = addNode(x, z, archetype, wingIndex + 1, depth + 2);
       if (!node) {
         x += d.x * 2;
         z += d.z * 2;
