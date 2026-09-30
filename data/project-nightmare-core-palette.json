@@ -1,0 +1,21 @@
+{
+  "name": "Project Nightmare Core Palette",
+  "colours": {
+    "The Void": [
+      "#0B0C10",
+      "#1F2833"
+    ],
+    "Decay & Surveillance": [
+      "#2C3531",
+      "#4E5D4C"
+    ],
+    "The Neon Glitch": [
+      "#FF0055",
+      "#00F0FF"
+    ],
+    "Terminal Horizon": [
+      "#8B00FF",
+      "#FF5500"
+    ]
+  }
+}
