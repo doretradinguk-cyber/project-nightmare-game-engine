@@ -5,161 +5,105 @@ const DIRECTIONS = [
   { x: 0, z: -1, name: 'north' }
 ];
 
-/*
- * PROJECT NIGHTMARE — MANSION GENERATOR
- *
- * The lobby is the fixed anchor.
- * Everything beyond it is a seeded recombination of reusable room modules.
- * Think D12 outcomes, not twelve rooms: each archetype has variants, dressing,
- * traps, connectors and possible wing/vertical relationships.
- */
 export const ROOM_ARCHETYPES = [
-  { type: 'grand-hall', size: 'large', weight: 8 },
-  { type: 'gallery', size: 'large', weight: 7 },
-  { type: 'dining-hall', size: 'large', weight: 6 },
-  { type: 'library', size: 'medium', weight: 6 },
-  { type: 'study', size: 'medium', weight: 6 },
-  { type: 'conservatory', size: 'large', weight: 5 },
-  { type: 'bedroom', size: 'medium', weight: 7 },
-  { type: 'service', size: 'medium', weight: 7 },
-  { type: 'storage', size: 'small', weight: 8 },
-  { type: 'security', size: 'medium', weight: 5 },
-  { type: 'chapel', size: 'large', weight: 4 },
-  { type: 'machine-room', size: 'large', weight: 4 }
+  { type: 'grand-hall', size: 'large', weight: 1 },
+  { type: 'gallery', size: 'large', weight: 1 },
+  { type: 'dining-hall', size: 'large', weight: 1 },
+  { type: 'library', size: 'medium', weight: 1 },
+  { type: 'study', size: 'medium', weight: 1 },
+  { type: 'conservatory', size: 'large', weight: 1 },
+  { type: 'bedroom', size: 'medium', weight: 1 },
+  { type: 'service', size: 'medium', weight: 1 },
+  { type: 'storage', size: 'small', weight: 1 },
+  { type: 'security', size: 'medium', weight: 1 },
+  { type: 'chapel', size: 'large', weight: 1 },
+  { type: 'machine-room', size: 'large', weight: 1 }
 ];
 
-const TRAPS = [
-  'pressure-floor',
-  'false-door',
-  'collapsing-corridor',
-  'tripwire',
-  'dark-room',
-  'moving-wall',
-  'none'
-];
-
-const DRESSING = [
-  'dust',
-  'covered-furniture',
-  'broken-frames',
-  'dead-plants',
-  'old-equipment',
-  'water-damage',
-  'surveillance',
-  'empty'
-];
+const DRESSING_BY_ZONE = {
+  formal: ['empty', 'covered-furniture', 'broken-frames', 'dust'],
+  private: ['empty', 'dust', 'covered-furniture'],
+  service: ['empty', 'old-equipment', 'water-damage'],
+  utility: ['empty', 'old-equipment', 'surveillance']
+};
 
 export function createLayout(seed = Date.now(), options = {}) {
   const random = mulberry32(Number(seed) || 1);
-  const wings = clampInt(options.wings, 2, 5, 3);
-  const roomsPerWing = clampInt(options.roomsPerWing, 4, 9, 6);
+  const wings = clampInt(options.wings, 2, 3, 3);
+  const roomsPerWing = clampInt(options.roomsPerWing, 4, 7, 5);
   const nodes = [];
   const edges = [];
   const occupied = new Set();
+  const edgeKeys = new Set();
   const key = (x, z) => `${x},${z}`;
 
-  // Fixed lobby: its identity and position never change.
-  const lobby = {
-    id: 'lobby',
-    x: 0,
-    z: 0,
-    type: 'hub',
-    archetype: 'lobby',
-    wing: 0,
-    variant: 0,
-    dressing: 'lobby',
-    trap: 'none',
-    fixed: true
-  };
-  nodes.push(lobby);
-  occupied.add(key(0, 0));
-
-  const addNode = (x, z, archetype, wing, depth) => {
+  const addNode = (x, z, archetype, wing, depth, zone, fixed = false) => {
     const k = key(x, z);
     if (occupied.has(k)) return null;
     occupied.add(k);
-
     const module = ROOM_ARCHETYPES.find(r => r.type === archetype) || ROOM_ARCHETYPES[0];
-    const node = {
+    const dressingPool = DRESSING_BY_ZONE[zone] || DRESSING_BY_ZONE.formal;
+    return nodes[nodes.push({
       id: `room-${nodes.length}`,
-      x, z,
-      type: archetype,
-      archetype,
-      size: module.size,
-      wing,
-      depth,
+      x, z, type: archetype, archetype, size: module.size, wing, depth, zone,
       variant: Math.floor(random() * 12),
-      dressing: pick(DRESSING, random),
-      trap: random() < 0.34 ? pick(TRAPS, random) : 'none',
+      dressing: pick(dressingPool, random),
+      trap: 'none',
       ceilingVariant: Math.floor(random() * 6),
-      textureVariant: Math.floor(random() * 8)
-    };
-    nodes.push(node);
-    return node;
+      textureVariant: Math.floor(random() * 8),
+      fixed
+    }) - 1];
   };
 
-  // Fixed arrival sequence: the lobby has one clear door into the mansion.
-  const entryDirIndex = 0;
-  const entryDir = DIRECTIONS[entryDirIndex];
-  const mansionEntrance = addNode(entryDir.x * 2, entryDir.z * 2, 'grand-hall', 1, 1);
-  if (mansionEntrance) {
-    mansionEntrance.id = 'mansion-entrance';
-    mansionEntrance.fixed = true;
-    mansionEntrance.dressing = 'entry-hall';
-    mansionEntrance.trap = 'none';
-    edges.push({ from: lobby.id, to: mansionEntrance.id, kind: 'mansion-entry', width: 3.6 });
-  }
+  const connect = (a, b, kind = 'corridor') => {
+    if (!a || !b) return;
+    const k = [a.id, b.id].sort().join('|');
+    if (edgeKeys.has(k)) return;
+    edgeKeys.add(k);
+    edges.push({ from: a.id, to: b.id, kind, width: 3.8 });
+  };
 
-  // Procedural wings begin beyond the entrance. The lobby is never connected to random rooms.
-  const wingAngles = shuffledDirections(random)
-    .filter(i => i !== entryDirIndex)
-    .slice(0, Math.max(1, wings - 1));
+  // The fixed lobby is the believable front-of-house arrival.
+  const lobby = addNode(0, 0, 'lobby', 0, 0, 'formal', true);
+  lobby.id = 'lobby';
+  lobby.type = 'hub';
+  lobby.archetype = 'lobby';
+  lobby.dressing = 'lobby';
 
-  wingAngles.forEach((dirIndex, wingIndex) => {
-    const d = DIRECTIONS[dirIndex];
-    let x = entryDir.x * 2 + d.x * 2;
-    let z = entryDir.z * 2 + d.z * 2;
-    let previous = mansionEntrance || lobby;
+  const entrance = addNode(2, 0, 'grand-hall', 0, 1, 'formal', true);
+  entrance.id = 'mansion-entrance';
+  entrance.dressing = 'entry-hall';
+  connect(lobby, entrance, 'mansion-entry');
 
-    for (let depth = 0; depth < roomsPerWing; depth += 1) {
-      const archetype = depth === roomsPerWing - 1
-        ? pickDestination(random)
-        : weightedArchetype(random);
+  // A central hall is the organising spine. The three wings are zoned deliberately:
+  // east = formal/public, north = private rooms, south = service/back-of-house.
+  const plans = [
+    { name: 'formal', dir: DIRECTIONS[0], rooms: ['gallery', 'dining-hall', 'library', 'conservatory', 'chapel'] },
+    { name: 'private', dir: DIRECTIONS[3], rooms: ['study', 'bedroom', 'bedroom', 'bedroom', 'gallery'] },
+    { name: 'service', dir: DIRECTIONS[2], rooms: ['service', 'storage', 'machine-room', 'security', 'service'] }
+  ];
 
-      const node = addNode(x, z, archetype, wingIndex + 1, depth + 2);
-      if (!node) {
-        x += d.x * 2;
-        z += d.z * 2;
-        continue;
-      }
+  plans.slice(0, wings).forEach((plan, wingIndex) => {
+    const d = plan.dir;
+    let previous = entrance;
+    let x = entrance.x + d.x * 2;
+    let z = entrance.z + d.z * 2;
 
-      edges.push({
-        from: previous.id,
-        to: node.id,
-        kind: depth === 0 ? 'wing-entry' : 'corridor',
-        width: node.size === 'small' ? 2.6 : 3.2
-      });
+    for (let depth = 0; depth < Math.min(roomsPerWing, plan.rooms.length); depth += 1) {
+      const node = addNode(x, z, plan.rooms[depth], wingIndex + 1, depth + 2, plan.name);
+      if (!node) break;
+      connect(previous, node, depth === 0 ? 'wing-entry' : 'corridor');
       previous = node;
 
-      // Secondary rooms make wings branch instead of becoming straight hallways.
-      if (depth > 0 && random() > 0.38) {
-        const side = DIRECTIONS[(dirIndex + (random() > 0.5 ? 1 : 3)) % 4];
-        const branchDepth = depth;
-        const branch = addNode(
-          x + side.x * 2,
-          z + side.z * 2,
-          weightedArchetype(random),
-          wingIndex + 1,
-          branchDepth
-        );
-        if (branch) {
-          edges.push({
-            from: node.id,
-            to: branch.id,
-            kind: 'side-room',
-            width: branch.size === 'small' ? 2.4 : 2.9
-          });
-        }
+      // A small number of side rooms create believable secondary circulation.
+      // They are placed on the outside of the wing, never between the main hall and destination.
+      if (depth > 0 && depth < roomsPerWing - 1 && depth % 2 === 1) {
+        const sideDir = d.name === 'east' || d.name === 'west'
+          ? (wingIndex % 2 ? DIRECTIONS[2] : DIRECTIONS[3])
+          : (wingIndex % 2 ? DIRECTIONS[0] : DIRECTIONS[1]);
+        const sideType = plan.name === 'private' ? 'bedroom' : plan.name === 'service' ? 'storage' : 'study';
+        const side = addNode(x + sideDir.x * 2, z + sideDir.z * 2, sideType, wingIndex + 1, depth + 2, plan.name);
+        if (side) connect(node, side, 'side-room');
       }
 
       x += d.x * 2;
@@ -167,70 +111,39 @@ export function createLayout(seed = Date.now(), options = {}) {
     }
   });
 
-  // Loops prevent the mansion feeling like a set of corridors with dead ends.
-  const candidates = nodes.filter(n => n.id !== 'lobby');
-  for (let i = 0; i < candidates.length - 2; i += 1) {
-    if (random() < 0.16) {
-      edges.push({
-        from: candidates[i].id,
-        to: candidates[i + 2].id,
-        kind: 'loop',
-        width: 2.8
-      });
-    }
+  // One controlled cross-link can form a circuit without producing a random maze.
+  const formal = nodes.filter(n => n.zone === 'formal' && n.id !== 'lobby');
+  const privateRooms = nodes.filter(n => n.zone === 'private');
+  if (formal.length >= 3 && privateRooms.length) {
+    const target = privateRooms[0];
+    const source = formal[Math.min(2, formal.length - 1)];
+    if (Math.abs(source.x - target.x) + Math.abs(source.z - target.z) <= 4) connect(source, target, 'gallery-link');
   }
 
-  // Vertical transitions are deliberately sparse: finding stairs should matter.
   const stairs = buildStairs(nodes, random);
-
   return {
     seed: Number(seed) || 1,
-    generatorVersion: '2.0-d12-mansion',
+    generatorVersion: '3.0-logical-mansion',
     wings,
     roomsPerWing,
     nodes,
     edges,
     stairs,
     playerSlots: Math.min(8, clampInt(options.maxPlayers, 1, 8, 8)),
-    cacheKey: `mansion:${Number(seed) || 1}:v2`
+    cacheKey: `mansion:${Number(seed) || 1}:v3-logical`
   };
 }
 
 function buildStairs(nodes, random) {
-  const candidates = nodes.filter(n => n.id !== 'lobby' && n.depth > 1);
-  const count = Math.min(5, Math.max(1, Math.floor(candidates.length / 5)));
-  const chosen = shuffle(candidates, random).slice(0, count);
-
+  const candidates = nodes.filter(n => n.zone === 'private' || n.zone === 'formal');
+  const chosen = shuffle(candidates, random).slice(0, Math.min(2, Math.max(1, Math.floor(candidates.length / 6))));
   return chosen.map((node, i) => ({
-    id: `stairs-${i + 1}`,
-    room: node.id,
-    direction: random() > 0.5 ? 'up' : 'down',
-    destination: 'unresolved'
+    id: `stairs-${i + 1}`, room: node.id,
+    direction: i === 0 ? 'up' : 'down', destination: 'unresolved'
   }));
 }
 
-function weightedArchetype(random) {
-  const total = ROOM_ARCHETYPES.reduce((sum, r) => sum + r.weight, 0);
-  let roll = random() * total;
-  for (const room of ROOM_ARCHETYPES) {
-    roll -= room.weight;
-    if (roll <= 0) return room.type;
-  }
-  return ROOM_ARCHETYPES[0].type;
-}
-
-function pickDestination(random) {
-  return pick(['grand-hall', 'gallery', 'chapel', 'machine-room', 'library'], random);
-}
-
-function pick(list, random) {
-  return list[Math.floor(random() * list.length)];
-}
-
-function shuffledDirections(random) {
-  return shuffle(DIRECTIONS.map((_, i) => i), random);
-}
-
+function pick(list, random) { return list[Math.floor(random() * list.length)]; }
 function shuffle(list, random) {
   const copy = [...list];
   for (let i = copy.length - 1; i > 0; i -= 1) {
@@ -239,12 +152,10 @@ function shuffle(list, random) {
   }
   return copy;
 }
-
 function clampInt(value, min, max, fallback) {
   const n = Number(value);
   return Number.isFinite(n) ? Math.max(min, Math.min(max, Math.floor(n))) : fallback;
 }
-
 function mulberry32(seed) {
   return () => {
     let t = seed += 0x6D2B79F5;
