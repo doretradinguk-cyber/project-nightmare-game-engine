@@ -55,14 +55,24 @@ window.addEventListener('mousemove',e=>{
 function status(s){$('status').textContent=s;$('signal').textContent=s.includes('BREACH')?'BREACH':s.includes('STABLE')?'STABLE':'ONLINE'}
 function loading(p,label,detail){const el=$('loading-eye');el.style.setProperty('--progress',Math.max(0,Math.min(100,p))+'%');$('loading-percent').textContent=Math.round(p)+'%';$('loading-label').textContent=label;$('loading-detail').textContent=detail;el.classList.toggle('ready',p>=100)}
 async function load(seed=Date.now()){
- if(runtime) runtime.destroy(); effect=null;
- $('status').textContent='GENERATING PROCEDURAL WORLD...';
- runtime=bootMansion($('sandbox-canvas'),{seed,maxPlayers:8,onProgress:(p,label,detail)=>{loading(p,label,detail);if(p>=96&&!runtime?.__playable){runtime.__playable=true;loading(100,'WORLD READY','PLAYABLE // FINALISING IN BACKGROUND');$('play-screen').hidden=false;status('WORLD READY // ENTER WHEN READY')}}});
- effect=new SandboxExperience(runtime,{status,telemetry:(k,v)=>{if(k==='POWER')$('powerReadout').textContent=v}});
- runtime.renderer.addEffect(effect);
- $('seed').textContent=runtime.seed; $('nodes').textContent=runtime.layout.nodes.length;
- $('map').textContent=runtime.layout.edges.length+' architectural links // '+runtime.layout.stairs.length+' vertical transitions // 8-player topology';
- try{await runtime.ready;loading(100,'WORLD ONLINE','BUFFER READY // ALL SYSTEMS NOMINAL');status('WORLD ONLINE // CONTENT READY');if(!runtime.__playable){runtime.__playable=true;$('play-screen').hidden=false}}catch(e){console.error(e);loading(100,'WORLD ONLINE // CONTENT WARNING','PROCEDURAL WORLD STILL ONLINE');status('CONTENT WARNING // PROCEDURAL WORLD STILL ONLINE');$('play-screen').hidden=false}
+ if(runtime) runtime.destroy();
+ runtime=null; effect=null; $('play-screen').hidden=true; loading(0,'BUFFERING WORLD...','INITIALISING');
+ try {
+  status('GENERATING PROCEDURAL WORLD...');
+  runtime=bootMansion($('sandbox-canvas'),{seed,maxPlayers:8,onProgress:(p,label,detail)=>{loading(p,label,detail);if(p>=96&&!runtime?.__playable){runtime.__playable=true;loading(100,'WORLD READY','PLAYABLE // FINALISING IN BACKGROUND');$('play-screen').hidden=false;status('WORLD READY // ENTER WHEN READY')}}});
+  effect=new SandboxExperience(runtime,{status,telemetry:(k,v)=>{if(k==='POWER')$('powerReadout').textContent=v}});
+  runtime.renderer.addEffect(effect);
+  $('seed').textContent=runtime.seed; $('nodes').textContent=runtime.layout.nodes.length;
+  $('map').textContent=runtime.layout.edges.length+' architectural links // '+runtime.layout.stairs.length+' vertical transitions // 8-player topology';
+  await runtime.ready;
+  loading(100,'WORLD ONLINE','BUFFER READY // ALL SYSTEMS NOMINAL');status('WORLD ONLINE // CONTENT READY');
+  if(!runtime.__playable){runtime.__playable=true;$('play-screen').hidden=false}
+ } catch(e) {
+  console.error('Project Nightmare sandbox boot failed',e);
+  loading(100,'WORLD RECOVERED','RENDERER ACTIVE // CONTENT RETRY AVAILABLE');
+  status('RECOVERY MODE // REGENERATE WORLD');
+  $('play-screen').hidden=true;
+ }
 }
 $('generate').onclick=()=>load(Date.now()); $('event').onclick=()=>effect?.triggerEvent();
 $('power').onclick=()=>{powerOn=!powerOn;effect?.setPower(powerOn ? .68 : .12);status(powerOn?'POWER RESTORED // STABLE':'POWER FAILURE // EMERGENCY LIGHTING')};
