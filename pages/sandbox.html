@@ -15,7 +15,7 @@
 </header>
 <section class="sandbox-console">
 <div class="sandbox-toolbar">
-<button id="generate">🌍 GENERATE WORLD</button><button id="event">👻 TRIGGER NIGHTMARE</button><button id="power">⚡ POWER CYCLE</button><button id="reset">↺ RESET VIEW</button><button id="fullscreen">⛶ FULLSCREEN</button><span class="ui-sentinel-pair" aria-hidden="true">
+<button id="generate">🏛️ GENERATE FLOORPLAN</button><button id="event">👻 TRIGGER NIGHTMARE</button><button id="power">⚡ POWER CYCLE</button><button id="reset">↺ RESET VIEW</button><button id="fullscreen">⛶ FULLSCREEN</button><span class="ui-sentinel-pair" aria-hidden="true">
 <span class="ui-sentinel-eye" id="uiEyeLeft"><img src="../assets/props/nightmare-eye.svg" alt=""></span>
 <span class="ui-sentinel-eye" id="uiEyeRight"><img src="../assets/props/nightmare-eye.svg" alt=""></span>
 </span><span id="status">BOOTING...</span>
@@ -58,12 +58,12 @@ async function load(seed=Date.now()){
  if(runtime) runtime.destroy();
  runtime=null; effect=null; $('play-screen').hidden=true; loading(0,'BUFFERING WORLD...','INITIALISING');
  try {
-  status('GENERATING PROCEDURAL WORLD...');
-  runtime=bootMansion($('sandbox-canvas'),{seed,maxPlayers:8,onProgress:(p,label,detail)=>{loading(p,label,detail);if(p>=96&&!runtime?.__playable){runtime.__playable=true;loading(100,'WORLD READY','PLAYABLE // FINALISING IN BACKGROUND');$('play-screen').hidden=false;status('WORLD READY // ENTER WHEN READY')}}});
+  status('BUILDING LOGICAL FLOORPLAN...');
+  runtime=bootMansion($('sandbox-canvas'),{seed,maxPlayers:8,wings:3,roomsPerWing:5,onProgress:(p,label,detail)=>{loading(p,label,detail);if(p>=96&&!runtime?.__playable){runtime.__playable=true;loading(100,'WORLD READY','PLAYABLE // FINALISING IN BACKGROUND');$('play-screen').hidden=false;status('WORLD READY // ENTER WHEN READY')}}});
   effect=new SandboxExperience(runtime,{status,telemetry:(k,v)=>{if(k==='POWER')$('powerReadout').textContent=v}});
   runtime.renderer.addEffect(effect);
   $('seed').textContent=runtime.seed; $('nodes').textContent=runtime.layout.nodes.length;
-  $('map').textContent=runtime.layout.edges.length+' architectural links // '+runtime.layout.stairs.length+' vertical transitions // 8-player topology';
+  $('map').textContent=runtime.layout.edges.length+' architectural links // '+runtime.layout.stairs.length+' vertical transitions // formal / private / service zoning';
   await runtime.ready;
   loading(100,'WORLD ONLINE','BUFFER READY // ALL SYSTEMS NOMINAL');status('WORLD ONLINE // CONTENT READY');
   if(!runtime.__playable){runtime.__playable=true;$('play-screen').hidden=false}
