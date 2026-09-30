@@ -64,9 +64,19 @@ async function load(seed=Date.now()){
   runtime.renderer.addEffect(effect);
   $('seed').textContent=runtime.seed; $('nodes').textContent=runtime.layout.nodes.length;
   $('map').textContent=runtime.layout.edges.length+' architectural links // '+runtime.layout.stairs.length+' vertical transitions // formal / private / service zoning';
-  await runtime.ready;
-  loading(100,'WORLD ONLINE','BUFFER READY // ALL SYSTEMS NOMINAL');status('WORLD ONLINE // CONTENT READY');
-  if(!runtime.__playable){runtime.__playable=true;$('play-screen').hidden=false}
+  // Gameplay is intentionally independent of optional content buffering.
+  // The architectural world is playable as soon as the renderer is live.
+  runtime.ready.then(()=>{
+    if(!runtime)return;
+    loading(100,'WORLD ONLINE','BUFFER READY // ALL SYSTEMS NOMINAL');
+    status('WORLD ONLINE // CONTENT READY');
+  }).catch(error=>{
+    console.warn('Background content buffering failed; keeping architectural sandbox playable.',error);
+    status('WORLD READY // CONTENT BUFFER RETRY');
+  });
+  runtime.__playable=true;
+  loading(100,'WORLD READY','PLAYABLE // CONTENT BUFFERING IN BACKGROUND');
+  $('play-screen').hidden=false;
  } catch(e) {
   console.error('Project Nightmare sandbox boot failed',e);
   loading(100,'WORLD RECOVERED','RENDERER ACTIVE // CONTENT RETRY AVAILABLE');
