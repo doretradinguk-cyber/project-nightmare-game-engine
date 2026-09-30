@@ -76,7 +76,7 @@ async function load(seed=Date.now()){
 }
 $('generate').onclick=()=>load(Date.now()); $('event').onclick=()=>effect?.triggerEvent();
 $('power').onclick=()=>{powerOn=!powerOn;effect?.setPower(powerOn ? .68 : .12);status(powerOn?'POWER RESTORED // STABLE':'POWER FAILURE // EMERGENCY LIGHTING')};
-$('reset').onclick=()=>{if(!runtime)return;const n=runtime.layout.nodes.find(x=>x.type==='hub')||runtime.layout.nodes[0],p=runtime.renderer.point(n);runtime.renderer.camera.position.set(p.x,1.72,p.z+4);runtime.renderer.yaw=0;runtime.renderer.pitch=0};
+$('reset').onclick=()=>{if(!runtime)return;runtime.renderer.setLayout(runtime.layout);status('VIEW RESET // DOORWAY ALIGNED');};
 $('play').onclick=()=>{ $('play-screen').hidden=true; status('WORLD ACTIVE // ENTERED SANDBOX'); $('sandbox-canvas').focus(); $('sandbox-canvas').requestPointerLock?.(); }; $('fullscreen').onclick=()=>document.querySelector('.sandbox-stage').requestFullscreen?.();
 setInterval(()=>{if(runtime){$('sector').textContent=runtime.getRoom().toUpperCase();frames++;const now=performance.now();if(now-last>1000){fps=frames*1000/(now-last);frames=0;last=now;$('fps').textContent=Math.round(fps)}}},200);
 load();
