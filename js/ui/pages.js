@@ -22,24 +22,18 @@ export function renderPage(page){
   const root=document.querySelector('#page-root');
 
   if(page==='dashboard'){
-    const paletteHtml=palette.map(([group,hex,name])=>'<div class="pn-swatch" data-group="'+group+'"><i style="--sw:'+hex+'"></i><span>'+hex+'</span><small>'+name+'</small></div>').join('');
-    const cardsHtml=cards.map(c=>'<a class="pn-card" href="pages/'+c[0]+'.html" aria-label="Open '+c[2]+'"><span>'+c[1]+' '+c[2]+'</span><strong>'+c[2]+'</strong><small>'+c[3]+'</small><b>OPEN CONSOLE →</b></a>').join('');
-    root.innerHTML='<section class="pn-dashboard">'+
-      '<div class="pn-hero">'+
-        '<div class="pn-hero-sky"></div><div class="pn-sun"></div><div class="pn-city"></div><div class="pn-road"></div>'+
-        '<div class="pn-hero-grid"></div><div class="pn-hero-scan"></div>'+
-        '<div class="pn-hero-copy"><span>3D GAME ENVIRONMENT &amp; ASSETS // RETROWAVE HORROR SYSTEM</span><h2>REALITY IS<br><em>JUST ANOTHER LEVEL</em></h2><p>Rain-soaked architecture. Neon surveillance. Procedural nightmares.</p><div class="pn-status"><i></i> ENGINE ONLINE <b>THREE.JS // PBR // CONTENT PACKS</b></div></div>'+
-        '<div class="pn-facility"><span>12</span><small>CENTRAL RESEARCH<br>FACILITY</small><b>SECTOR</b></div>'+
-        '<div class="pn-hud-corner pn-hud-left">SYS_01 // NIGHTMARE<br>WORLD: MANSION<br>MODE: DEVELOPMENT</div>'+
-        '<div class="pn-hud-corner pn-hud-right">SIGNAL: STABLE<br>ASSETS: ONLINE<br>PLAYERS: 08 MAX</div>'+
-      '</div>'+
-      '<div class="pn-section-head"><span>01 // COMMAND DECK</span><strong>PROJECT NIGHTMARE SYSTEMS</strong><small>SELECT A LIVE DEVELOPMENT CONSOLE</small></div>'+
-      '<div class="pn-card-grid">'+cardsHtml+'</div>'+
-      '<div class="pn-lower">'+
-        '<section class="pn-panel pn-scenes"><header><span>02 // WORLD MODULES</span><strong>3D ENVIRONMENT MAP</strong></header><div class="pn-scene-grid"><div class="pn-scene lobby"><b>MANSION LOBBY</b><small>FIXED START</small></div><div class="pn-scene corridor"><b>PROCEDURAL CORRIDOR</b><small>RECONFIGURABLE</small></div><div class="pn-scene control"><b>CONTROL ROOM</b><small>SURVEILLANCE</small></div><div class="pn-scene roof"><b>ROOFTOP CITY</b><small>TERMINAL HORIZON</small></div></div></section>'+
-        '<section class="pn-panel pn-palette"><header><span>03 // COLOUR SYSTEM</span><strong>CORE PALETTE</strong></header><div class="pn-palette-grid">'+paletteHtml+'</div></section>'+
-      '</div>'+
-      '<footer class="pn-footer"><span>👁️ PROJECT NIGHTMARE</span><b>DORE TRADING UK</b><small>3D RETROWAVE // CYBER HORROR // ORIGINAL IP</small></footer>'+
+    const cardsHtml=cards.map((c,i)=>'<a class="pn-console-tab tab-'+(i+1)+'" href="pages/'+c[0]+'.html"><span>'+c[1]+'</span><b>'+String(i+1).padStart(2,'0')+'</b><strong>'+c[2]+'</strong><small>'+c[3]+'</small></a>').join('');
+    root.innerHTML='<section class="pn-mock-dashboard">'+
+      '<img class="pn-scene-art" src="assets/backgrounds/project-nightmare-retrowave-city.svg" alt="">'+
+      '<div class="pn-art-glow"></div>'+
+      '<div class="pn-art-jester"><img src="assets/characters/nightmare-jester.svg" alt="The Laughing Jester"></div>'+
+      '<div class="pn-art-eye pn-eye-one"><img src="assets/props/nightmare-eye.svg" alt=""></div>'+
+      '<div class="pn-art-eye pn-eye-two"><img src="assets/props/nightmare-eye.svg" alt=""></div>'+
+      '<div class="pn-title-block"><span>DORE TRADING UK // 3D HORROR ENGINE</span><h2>PROJECT<br><em>NIGHTMARE</em></h2><p>THE LIVING WORLD // RETROWAVE ENVIRONMENT SYSTEM</p></div>'+
+      '<div class="pn-location"><span>SECTOR 01</span><strong>MANSION / CITY EDGE</strong><small>WORLD STATE: STABLE</small></div>'+
+      '<div class="pn-console-frame"><div class="pn-console-head"><span>◈ NIGHTMARE CONTROL DECK</span><b>LIVE</b></div><div class="pn-console-tabs">'+cardsHtml+'</div></div>'+
+      '<div class="pn-scene-readout"><span>01</span><b>ARCHITECTURE</b><small>PROCEDURAL // ADAPTIVE</small><span>02</span><b>ATMOSPHERE</b><small>RAIN // NEON // DECAY</small><span>03</span><b>SURVEILLANCE</b><small>ONLINE // EYES ACTIVE</small></div>'+
+      '<div class="pn-bottom-brand"><span>👁 PROJECT NIGHTMARE</span><b>REALITY IS JUST ANOTHER LEVEL</b><small>ALL RIGHTS RESERVED // DORE TRADING UK</small></div>'+
     '</section>';
     return;
   }
