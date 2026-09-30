@@ -28,7 +28,7 @@
 <div class="scanline"></div>
 <div class="hud hud-left"><span>📍 SECTOR <b id="sector">HUB</b></span><span>🎲 SEED <b id="seed">—</b></span><span>🧩 NODES <b id="nodes">—</b></span></div>
 <div class="hud hud-right"><span>⚡ POWER <b id="powerReadout">68%</b></span><span>📡 SIGNAL <b id="signal">STABLE</b></span><span>🎞️ FPS <b id="fps">—</b></span></div>
-<div class="prompt">👁️ CLICK VIEWPORT TO ENTER // WASD MOVE // MOUSE LOOK // SHIFT SPRINT // ESC RELEASE</div>
+<div class="prompt">WASD MOVE // MOUSE LOOK // SHIFT SPRINT // ESC RELEASE</div>
 </div>
 <div class="sandbox-bottom">
 <div><strong>📡 WORLD TELEMETRY</strong><span>🏚️ ARCHITECTURE <b>ADAPTIVE</b></span><span>📹 SURVEILLANCE <b>ONLINE</b></span><span>🤡 JESTER MANIFESTATION <b>ARMED</b></span></div>
@@ -57,12 +57,12 @@ function loading(p,label,detail){const el=$('loading-eye');el.style.setProperty(
 async function load(seed=Date.now()){
  if(runtime) runtime.destroy(); effect=null;
  $('status').textContent='GENERATING PROCEDURAL WORLD...';
- runtime=bootMansion($('sandbox-canvas'),{seed,maxPlayers:8,onProgress:loading});
+ runtime=bootMansion($('sandbox-canvas'),{seed,maxPlayers:8,onProgress:(p,label,detail)=>{loading(p,label,detail);if(p>=96&&!runtime?.__playable){runtime.__playable=true;loading(100,'WORLD READY','PLAYABLE // FINALISING IN BACKGROUND');$('play-screen').hidden=false;status('WORLD READY // ENTER WHEN READY')}}});
  effect=new SandboxExperience(runtime,{status,telemetry:(k,v)=>{if(k==='POWER')$('powerReadout').textContent=v}});
  runtime.renderer.addEffect(effect);
  $('seed').textContent=runtime.seed; $('nodes').textContent=runtime.layout.nodes.length;
  $('map').textContent=runtime.layout.edges.length+' architectural links // '+runtime.layout.stairs.length+' vertical transitions // 8-player topology';
- try{await runtime.ready;loading(100,'WORLD ONLINE','BUFFER READY // ALL SYSTEMS NOMINAL');status('WORLD ONLINE // CONTENT READY');$('play-screen').hidden=false}catch(e){console.error(e);loading(100,'WORLD ONLINE // CONTENT WARNING','PROCEDURAL WORLD STILL ONLINE');status('CONTENT WARNING // PROCEDURAL WORLD STILL ONLINE');$('play-screen').hidden=false}
+ try{await runtime.ready;loading(100,'WORLD ONLINE','BUFFER READY // ALL SYSTEMS NOMINAL');status('WORLD ONLINE // CONTENT READY');if(!runtime.__playable){runtime.__playable=true;$('play-screen').hidden=false}}catch(e){console.error(e);loading(100,'WORLD ONLINE // CONTENT WARNING','PROCEDURAL WORLD STILL ONLINE');status('CONTENT WARNING // PROCEDURAL WORLD STILL ONLINE');$('play-screen').hidden=false}
 }
 $('generate').onclick=()=>load(Date.now()); $('event').onclick=()=>effect?.triggerEvent();
 $('power').onclick=()=>{powerOn=!powerOn;effect?.setPower(powerOn ? .68 : .12);status(powerOn?'POWER RESTORED // STABLE':'POWER FAILURE // EMERGENCY LIGHTING')};
