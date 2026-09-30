@@ -59,9 +59,9 @@ async function load(seed=Date.now()){
  runtime=null; effect=null; $('play-screen').hidden=true; loading(0,'BUFFERING WORLD...','INITIALISING');
  try {
   status('BUILDING LOGICAL FLOORPLAN...');
-  runtime=bootMansion($('sandbox-canvas'),{seed,maxPlayers:8,wings:3,roomsPerWing:5,onProgress:(p,label,detail)=>{loading(p,label,detail);if(p>=96&&!runtime?.__playable){runtime.__playable=true;loading(100,'WORLD READY','PLAYABLE // FINALISING IN BACKGROUND');$('play-screen').hidden=false;status('WORLD READY // ENTER WHEN READY')}}});
-  effect=new SandboxExperience(runtime,{status,telemetry:(k,v)=>{if(k==='POWER')$('powerReadout').textContent=v}});
-  runtime.renderer.addEffect(effect);
+  runtime=bootMansion($('sandbox-canvas'),{seed,maxPlayers:8,wings:3,roomsPerWing:5,loadContentTest:false,onProgress:(p,label,detail)=>{loading(p,label,detail);if(p>=96&&!runtime?.__playable){runtime.__playable=true;loading(100,'WORLD READY','PLAYABLE // FINALISING IN BACKGROUND');$('play-screen').hidden=false;status('WORLD READY // ENTER WHEN READY')}}});
+  try { effect=new SandboxExperience(runtime,{status,telemetry:(k,v)=>{if(k==='POWER')$('powerReadout').textContent=v}}); } catch(error) { console.error('Sandbox atmosphere failed; continuing with architectural world.',error); status('WORLD READY // ATMOSPHERE RECOVERY'); }
+  if(effect) runtime.renderer.addEffect(effect);
   $('seed').textContent=runtime.seed; $('nodes').textContent=runtime.layout.nodes.length;
   $('map').textContent=runtime.layout.edges.length+' architectural links // '+runtime.layout.stairs.length+' vertical transitions // formal / private / service zoning';
   // Gameplay is intentionally independent of optional content buffering.
