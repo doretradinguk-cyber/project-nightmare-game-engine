@@ -20,6 +20,7 @@
 <span class="ui-sentinel-eye" id="uiEyeRight"><img src="../assets/props/nightmare-eye.svg" alt=""></span>
 </span><span id="status">BOOTING...</span>
 </div>
+<div id="loading-eye" class="loading-eye" aria-live="polite"><div class="loading-eye-art"><img src="../assets/props/nightmare-eye.svg" alt=""><i></i></div><div class="loading-eye-ring"></div><strong id="loading-percent">0%</strong><span id="loading-label">BUFFERING WORLD...</span><small id="loading-detail">INITIALISING</small></div>
 <div class="sandbox-stage">
 <canvas id="sandbox-canvas" aria-label="Project Nightmare first-person 3D sandbox"></canvas>
 <div class="reticle"></div>
@@ -51,15 +52,16 @@ window.addEventListener('mousemove',e=>{
  });
 });
 function status(s){$('status').textContent=s;$('signal').textContent=s.includes('BREACH')?'BREACH':s.includes('STABLE')?'STABLE':'ONLINE'}
+function loading(p,label,detail){const el=$('loading-eye');el.style.setProperty('--progress',Math.max(0,Math.min(100,p))+'%');$('loading-percent').textContent=Math.round(p)+'%';$('loading-label').textContent=label;$('loading-detail').textContent=detail;el.classList.toggle('ready',p>=100)}
 async function load(seed=Date.now()){
  if(runtime) runtime.destroy(); effect=null;
  $('status').textContent='GENERATING PROCEDURAL WORLD...';
- runtime=bootMansion($('sandbox-canvas'),{seed,maxPlayers:8});
+ runtime=bootMansion($('sandbox-canvas'),{seed,maxPlayers:8,onProgress:loading});
  effect=new SandboxExperience(runtime,{status,telemetry:(k,v)=>{if(k==='POWER')$('powerReadout').textContent=v}});
  runtime.renderer.addEffect(effect);
  $('seed').textContent=runtime.seed; $('nodes').textContent=runtime.layout.nodes.length;
  $('map').textContent=runtime.layout.edges.length+' architectural links // '+runtime.layout.stairs.length+' vertical transitions // 8-player topology';
- try{await runtime.ready;status('WORLD ONLINE // CONTENT READY')}catch(e){console.error(e);status('CONTENT WARNING // PROCEDURAL WORLD STILL ONLINE')}
+ try{await runtime.ready;loading(100,'WORLD ONLINE','BUFFER READY // ALL SYSTEMS NOMINAL');status('WORLD ONLINE // CONTENT READY')}catch(e){console.error(e);loading(100,'WORLD ONLINE // CONTENT WARNING','PROCEDURAL WORLD STILL ONLINE');status('CONTENT WARNING // PROCEDURAL WORLD STILL ONLINE')}
 }
 $('generate').onclick=()=>load(Date.now()); $('event').onclick=()=>effect?.triggerEvent();
 $('power').onclick=()=>{powerOn=!powerOn;effect?.setPower(powerOn ? .68 : .12);status(powerOn?'POWER RESTORED // STABLE':'POWER FAILURE // EMERGENCY LIGHTING')};
