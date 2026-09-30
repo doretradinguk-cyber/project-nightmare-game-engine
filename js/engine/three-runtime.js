@@ -21,14 +21,14 @@ constructor(canvas){
  this.#input();this.resize();
 }
 #input(){
- window.addEventListener('keydown',e=>this.keys.add(e.code));window.addEventListener('keyup',e=>this.keys.delete(e.code));
+ window.addEventListener('keydown',e=>{if(['KeyW','KeyA','KeyS','KeyD','ShiftLeft','ShiftRight','Space'].includes(e.code))e.preventDefault();this.keys.add(e.code)});window.addEventListener('keyup',e=>this.keys.delete(e.code));
  this.canvas.addEventListener('click',()=>this.canvas.requestPointerLock?.());
  this.canvas.addEventListener('mousemove',e=>{if(document.pointerLockElement!==this.canvas)return;this.yaw-=e.movementX*.0024;this.pitch=THREE.MathUtils.clamp(this.pitch-e.movementY*.0024,-1.35,1.35)});
 }
 resize(){
  const rect=this.canvas.getBoundingClientRect(),cssW=Math.max(1,Math.floor(rect.width||this.canvas.clientWidth||800)),cssH=Math.max(1,Math.floor(rect.height||this.canvas.clientHeight||600));
  const r=getRecommendedResolution(this.canvas);this.canvas.width=Math.max(1,r.width||Math.floor(cssW*(window.devicePixelRatio||1)));this.canvas.height=Math.max(1,r.height||Math.floor(cssH*(window.devicePixelRatio||1)));
- this.camera.aspect=cssW/cssH;this.camera.updateProjectionMatrix();this.renderer.setPixelRatio(1);this.renderer.setSize(this.canvas.width,this.canvas.height,false);
+ this.camera.aspect=cssW/cssH;this.camera.updateProjectionMatrix();this.renderer.setPixelRatio(1);this.renderer.setSize(cssW,cssH,false);
 }
 point(n){return new THREE.Vector3(n.x*S,0,n.z*S)}
 dims(n){
@@ -73,7 +73,7 @@ roomAt(x,z){return this.colliders.find(r=>x>r.x-r.w/2&&x<r.x+r.w/2&&z>r.z-r.d/2&
 update(dt){if(!this.layout)return;const speed=this.keys.has('ShiftLeft')||this.keys.has('ShiftRight')?5.8:3.4;let f=(this.keys.has('KeyW')?1:0)-(this.keys.has('KeyS')?1:0),s=(this.keys.has('KeyD')?1:0)-(this.keys.has('KeyA')?1:0),mag=Math.hypot(f,s)||1;f/=mag;s/=mag;const dx=(Math.sin(this.yaw)*f+Math.cos(this.yaw)*s)*speed*dt,dz=(-Math.cos(this.yaw)*f+Math.sin(this.yaw)*s)*speed*dt,nx=this.camera.position.x+dx,nz=this.camera.position.z+dz;if(!this.blocked(nx,this.camera.position.z))this.camera.position.x=nx;
 if(!this.blocked(this.camera.position.x,nz))this.camera.position.z=nz;this.camera.position.y=PH;this.camera.rotation.set(this.pitch,this.yaw,0);this.currentRoom=this.roomAt(this.camera.position.x,this.camera.position.z)}
 addEffect(effect){if(effect?.update)this.effects.add(effect);return effect}removeEffect(effect){this.effects.delete(effect)}render(){this.renderer.render(this.scene,this.camera)}
-frame=()=>{if(!this.running)return;const now=performance.now(),dt=Math.min(.05,(now-this.last)/1000);this.last=now;this.update(dt);for(const effect of this.effects)effect.update?.(dt);this.render();requestAnimationFrame(this.frame)}
+frame=()=>{if(!this.running)return;const now=performance.now(),dt=Math.min(.05,(now-this.last)/1000);this.last=now;try{this.update(dt);for(const effect of this.effects)effect.update?.(dt);this.render()}catch(error){console.error('Project Nightmare render loop failed',error);this.running=false;this.canvas.dispatchEvent(new CustomEvent('nightmare-render-error',{detail:error}))}if(this.running)requestAnimationFrame(this.frame)}
 start(){if(this.running)return;this.running=true;this.last=performance.now();this.frame()}
 getRoom(){return this.currentRoom}
 async loadGLTF(url,options={}){const gltf=await this.loader.loadAsync(url),root=gltf.scene;root.traverse(o=>{if(o.isMesh){o.castShadow=!this.profile.android;o.receiveShadow=true}});if(options.position)root.position.set(...options.position);if(options.scale)root.scale.setScalar(options.scale);this.world.add(root);return root}
