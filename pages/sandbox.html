@@ -20,6 +20,7 @@
 <span class="ui-sentinel-eye" id="uiEyeRight"><img src="../assets/props/nightmare-eye.svg" alt=""></span>
 </span><span id="status">BOOTING...</span>
 </div>
+<div id="play-screen" class="play-screen" hidden><div class="play-eye">👁️</div><h2>THE MANSION IS READY</h2><p>THE DOOR IS OPEN</p><button id="play" type="button">▶ PLAY</button><small>CLICK PLAY TO ENTER THE SANDBOX</small></div>
 <div class="sandbox-stage">
 <div id="loading-eye" class="loading-eye" aria-live="polite"><div class="loading-eye-art"><img src="../assets/props/nightmare-eye.svg" alt=""><i></i></div><div class="loading-eye-ring"></div><strong id="loading-percent">0%</strong><span id="loading-label">BUFFERING WORLD...</span><small id="loading-detail">INITIALISING</small></div>
 <canvas id="sandbox-canvas" aria-label="Project Nightmare first-person 3D sandbox"></canvas>
@@ -61,12 +62,12 @@ async function load(seed=Date.now()){
  runtime.renderer.addEffect(effect);
  $('seed').textContent=runtime.seed; $('nodes').textContent=runtime.layout.nodes.length;
  $('map').textContent=runtime.layout.edges.length+' architectural links // '+runtime.layout.stairs.length+' vertical transitions // 8-player topology';
- try{await runtime.ready;loading(100,'WORLD ONLINE','BUFFER READY // ALL SYSTEMS NOMINAL');status('WORLD ONLINE // CONTENT READY')}catch(e){console.error(e);loading(100,'WORLD ONLINE // CONTENT WARNING','PROCEDURAL WORLD STILL ONLINE');status('CONTENT WARNING // PROCEDURAL WORLD STILL ONLINE')}
+ try{await runtime.ready;loading(100,'WORLD ONLINE','BUFFER READY // ALL SYSTEMS NOMINAL');status('WORLD ONLINE // CONTENT READY');$('play-screen').hidden=false}catch(e){console.error(e);loading(100,'WORLD ONLINE // CONTENT WARNING','PROCEDURAL WORLD STILL ONLINE');status('CONTENT WARNING // PROCEDURAL WORLD STILL ONLINE');$('play-screen').hidden=false}
 }
 $('generate').onclick=()=>load(Date.now()); $('event').onclick=()=>effect?.triggerEvent();
 $('power').onclick=()=>{powerOn=!powerOn;effect?.setPower(powerOn ? .68 : .12);status(powerOn?'POWER RESTORED // STABLE':'POWER FAILURE // EMERGENCY LIGHTING')};
 $('reset').onclick=()=>{if(!runtime)return;const n=runtime.layout.nodes.find(x=>x.type==='hub')||runtime.layout.nodes[0],p=runtime.renderer.point(n);runtime.renderer.camera.position.set(p.x,1.72,p.z+4);runtime.renderer.yaw=Math.PI;runtime.renderer.pitch=0};
-$('fullscreen').onclick=()=>document.querySelector('.sandbox-stage').requestFullscreen?.();
+$('play').onclick=()=>{ $('play-screen').hidden=true; status('WORLD ACTIVE // ENTERED SANDBOX'); $('sandbox-canvas').focus(); $('sandbox-canvas').requestPointerLock?.(); }; $('fullscreen').onclick=()=>document.querySelector('.sandbox-stage').requestFullscreen?.();
 setInterval(()=>{if(runtime){$('sector').textContent=runtime.getRoom().toUpperCase();frames++;const now=performance.now();if(now-last>1000){fps=frames*1000/(now-last);frames=0;last=now;$('fps').textContent=Math.round(fps)}}},200);
 load();
 </script>
