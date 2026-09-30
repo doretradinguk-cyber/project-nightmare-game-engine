@@ -40,50 +40,64 @@ export class SandboxExperience {
     const green = this.mat(0x071208, .5, .05, 0x65ff55, 1.8);
     const white = this.mat(0x555858, .5, .05, 0xa9b4b5, .35);
 
+    const links = new Map(r.layout.nodes.map(n => [n.id, []]));
+    for (const e of r.layout.edges) {
+      links.get(e.from)?.push(e.to);
+      links.get(e.to)?.push(e.from);
+    }
+
     for (const n of r.layout.nodes) {
       const p = r.point(n), d = r.dims(n), g = new THREE.Group();
       g.position.copy(p);
-      // Raised skirting and architectural bands.
+
+      // Keep the normal mansion architectural and uncluttered.
+      const steel = this.mat(0x3b4142, .58, .55);
+      const black = this.mat(0x0c1010, .7, .2);
+      const white = this.mat(0x555858, .5, .05, 0xa9b4b5, .25);
+      const accent = this.mat(0x242829, .8, .05);
+
+      // Subtle architectural trim only; it never occupies the walking lane.
       this.mesh(g, new THREE.BoxGeometry(d.w-.15,.18,.18), steel, [0,.16,-d.d/2+.08]);
       this.mesh(g, new THREE.BoxGeometry(d.w-.15,.18,.18), steel, [0,.16,d.d/2-.08]);
       this.mesh(g, new THREE.BoxGeometry(.18,.18,d.d-.15), steel, [-d.w/2+.08,.16,0]);
       this.mesh(g, new THREE.BoxGeometry(.18,.18,d.d-.15), steel, [d.w/2-.08,.16,0]);
 
-      // Ceiling panels create depth rather than a flat box.
-      for(let x=-d.w/2+1;x<d.w/2-1;x+=2.2) {
-        this.mesh(g,new THREE.BoxGeometry(1.75,.06,d.d-.8),black,[x,H-.05,0]);
+      for(let x=-d.w/2+2.2;x<d.w/2-1.2;x+=3.8) {
+        this.mesh(g,new THREE.BoxGeometry(2.1,.06,d.d-.9),black,[x,H-.05,0]);
       }
 
-      // Hanging fluorescent fixtures.
-      for(let x=-d.w/2+1.4;x<d.w/2-1;x+=3.4) {
-        const fixture=this.mesh(g,new THREE.BoxGeometry(1.5,.08,.34),white,[x,H-.22,0]);
-        const lamp=new THREE.PointLight(n.type==='hub'?0xffd9ad:0xbfd8df,n.type==='hub'?2.3:1.25,7,2);
+      // Fewer, wider-spaced lights: readable architecture before atmosphere.
+      for(let x=-d.w/2+2;x<d.w/2-1;x+=5.2) {
+        this.mesh(g,new THREE.BoxGeometry(1.7,.08,.34),white,[x,H-.22,0]);
+        const lamp=new THREE.PointLight(n.type==='hub'?0xffd9ad:0xd6d9d6,n.type==='hub'?2.3:.85,8,2);
         lamp.position.set(x,H-.35,0);
         g.add(lamp);
       }
 
-      // Door/terminal accents make rooms readable as spaces.
-      if(n.type==='destination'||n.type==='study'||n.type==='security') {
-        this.mesh(g,new THREE.BoxGeometry(1.9,2.65,.12),steel,[0,1.32,d.d/2-.11]);
-        this.mesh(g,new THREE.BoxGeometry(1.55,.08,.08),red,[0,2.48,d.d/2-.18]);
+      // Only technical rooms get technical dressing.
+      if(n.archetype==='security'||n.archetype==='machine-room') {
+        this.mesh(g,new THREE.BoxGeometry(1.25,1.65,.55),accent,[0,.83,d.d/2-.45]);
       }
 
-      // Procedural props: cabinets, crates and server blocks.
-      const propCount=n.type==='hub'?5:3;
-      for(let i=0;i<propCount;i++){
-        const side=i%2?-1:1, x=side*(d.w*.34), z=-d.d*.25+i*.9;
-        this.mesh(g,new THREE.BoxGeometry(.75,1.35,.65),i%3?steel:concrete,[x,.68,z]);
-        this.mesh(g,new THREE.BoxGeometry(.54,.04,.05),i%2?green:red,[x,1.1,z+.34]);
+      // At most one floor prop per room, placed against a wall away from the doorway.
+      const propAllowed = n.type==='hub' || n.zone==='formal' || n.zone==='service';
+      const sparse = n.archetype!=='storage' && n.archetype!=='machine-room';
+      if(propAllowed && sparse) {
+        const neighbours = links.get(n.id)||[];
+        const doorSides = neighbours.map(id => r.layout.nodes.find(q=>q.id===id)).filter(Boolean)
+          .map(q => ({x:Math.sign(q.x-n.x),z:Math.sign(q.z-n.z)}));
+        const has = (x,z) => doorSides.some(s => s.x===x && s.z===z);
+        let x=0,z=0;
+        if(!has(1,0)) x=d.w/2-.58;
+        else if(!has(-1,0)) x=-d.w/2+.58;
+        else if(!has(0,1)) z=d.d/2-.58;
+        else z=-d.d/2+.58;
+        this.mesh(g,new THREE.BoxGeometry(.72,1.1,.62),accent,[x,.55,z]);
       }
+
       r.world.add(g);
     }
-
-    // Low-level emergency guide lights along the world.
-    for (const n of r.layout.nodes) {
-      const p=r.point(n), light=new THREE.PointLight(0xff263f,.35,5,2);
-      light.position.set(p.x,0.35,p.z);
-      this.ambient.add(light);
-    }
+    // Normal mode stays visually calm. Nightmare effects can add the red signal later.
 
     // Atmospheric particles: sparse dust, not a performance-heavy effect.
     const count=r.profile.android?90:220;
@@ -100,7 +114,7 @@ export class SandboxExperience {
     this.r.key.intensity=.65;
 
     // A distant red beacon gives the Sandbox its Nightmare identity.
-    this.beacon=new THREE.PointLight(0xff1744,3.5,24,2);
+    this.beacon=new THREE.PointLight(0xff1744,.8,18,2);
     this.beacon.position.set(0,3,-32);
     scene.add(this.beacon);
   }
@@ -199,13 +213,13 @@ export class SandboxExperience {
     this.pulse+=dt;
     this.updateSentinelEyes(dt);
     if(this.dust) this.dust.rotation.y+=dt*.006;
-    if(this.beacon) this.beacon.intensity=2.2+Math.sin(this.pulse*5)*1.3;
+    if(this.beacon) this.beacon.intensity=.65+Math.sin(this.pulse*2.5)*.2;
     if(this.eventActive){
       this.eventTimer+=dt;
       const t=Math.min(1,this.eventTimer/5);
       this.beacon.intensity=7+Math.sin(this.pulse*18)*4;
-      this.r.scene.fog.density=(this.r.profile.android?.042:.027)+Math.sin(t*Math.PI)*.035;
-      if(t>=1){this.eventActive=false;this.r.scene.fog.density=this.r.profile.android?.042:.027;this.hooks.status?.('WORLD STABLE // EVENT CLEARED');}
+      this.r.scene.fog.density=(this.r.profile.android?.018:.012)+Math.sin(t*Math.PI)*.035;
+      if(t>=1){this.eventActive=false;this.r.scene.fog.density=this.r.profile.android?.018:.012;this.hooks.status?.('WORLD STABLE // EVENT CLEARED');}
     }
   }
 
