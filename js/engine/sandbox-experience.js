@@ -1,4 +1,5 @@
 import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.186.0/build/three.module.js';
+const H = 4.4;
 
 export class SandboxExperience {
   constructor(runtime, hooks = {}) {
