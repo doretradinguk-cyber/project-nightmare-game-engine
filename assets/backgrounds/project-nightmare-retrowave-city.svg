@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice">
+<defs>
+ <linearGradient id="sky" x2="0" y2="1"><stop stop-color="#070713"/><stop offset=".42" stop-color="#17102b"/><stop offset=".72" stop-color="#34152c"/><stop offset="1" stop-color="#0B0C10"/></linearGradient>
+ <radialGradient id="sun"><stop stop-color="#FFB16B"/><stop offset=".22" stop-color="#FF5500"/><stop offset=".7" stop-color="#FF0055" stop-opacity=".45"/><stop offset="1" stop-color="#FF0055" stop-opacity="0"/></radialGradient>
+ <linearGradient id="tower" x2="0" y2="1"><stop stop-color="#26323a"/><stop offset=".45" stop-color="#111a20"/><stop offset="1" stop-color="#070b0e"/></linearGradient>
+ <linearGradient id="glass"><stop stop-color="#00F0FF" stop-opacity=".5"/><stop offset=".5" stop-color="#1F2833" stop-opacity=".1"/><stop offset="1" stop-color="#FF0055" stop-opacity=".3"/></linearGradient>
+ <pattern id="windows" width="78" height="60" patternUnits="userSpaceOnUse"><rect x="8" y="8" width="22" height="17" fill="#00F0FF" opacity=".18"/><rect x="47" y="8" width="22" height="17" fill="#FF0055" opacity=".12"/><rect x="8" y="35" width="22" height="17" fill="#FF5500" opacity=".08"/><rect x="47" y="35" width="22" height="17" fill="#4E5D4C" opacity=".25"/></pattern>
+ <pattern id="grid" width="70" height="70" patternUnits="userSpaceOnUse"><path d="M70 0H0V70" fill="none" stroke="#00F0FF" stroke-opacity=".18"/></pattern>
+ <filter id="glow"><feGaussianBlur stdDeviation="8"/></filter>
+ <linearGradient id="road" x2="0" y2="1"><stop stop-color="#1F2833"/><stop offset="1" stop-color="#050708"/></linearGradient>
+</defs>
+<rect width="1600" height="900" fill="url(#sky)"/>
+<circle cx="1210" cy="290" r="250" fill="url(#sun)"/>
+<g opacity=".65" filter="url(#glow)" fill="#00F0FF"><path d="M0 520L520 430 780 500 250 570Z"/><path d="M1050 500l550-80v110l-570 20z"/></g>
+<!-- distant city -->
+<g fill="#0B0C10" opacity=".95">
+ <path d="M0 470V300h120v170h40V240h145v230h45V330h150v140h50V205h190v265h45V285h120v185h60V340h150v130h55V270h135v200h55V220h170v250h45v-120h120v120h55v-180h90v180H0z"/>
+</g>
+<g fill="url(#windows)" opacity=".7"><path d="M55 318h95v170H55zM310 340h145v150H310zM550 230h190v260H550zM845 300h125v190H845zM1025 345h150v145h-150zM1210 240h180v250h-180zM1450 300h105v190h-105z"/></g>
+<!-- central brutalist facility -->
+<path d="M430 500L610 430 1210 455 1390 510v245H430Z" fill="#05080a" stroke="#2C3531" stroke-width="7"/>
+<path d="M475 515L620 462 1168 483 1345 523v204H475Z" fill="url(#tower)"/>
+<path d="M475 515L620 462 1168 483 1345 523" fill="none" stroke="#00F0FF" stroke-opacity=".55" stroke-width="4"/>
+<path d="M475 555L1345 555M475 615L1345 615M475 675L1345 675" stroke="#1F2833" stroke-width="3"/>
+<path d="M610 462v266M760 468v260M910 474v254M1060 478v250M1210 490v238" stroke="#2C3531" stroke-width="3"/>
+<path d="M490 535h820v165H490z" fill="url(#windows)" opacity=".6"/>
+<path d="M700 555h420v160H700z" fill="url(#glass)" opacity=".45" stroke="#00F0FF" stroke-opacity=".4" stroke-width="3"/>
+<path d="M775 575h270v125H775z" fill="#080c10" stroke="#FF0055" stroke-opacity=".3"/>
+<path d="M805 600h210v75H805z" fill="url(#grid)" opacity=".7"/>
+<!-- rooftop neon -->
+<path d="M650 448h410" stroke="#FF0055" stroke-width="6" opacity=".7"/>
+<path d="M690 440h330" stroke="#FF0055" stroke-width="22" opacity=".12" filter="url(#glow)"/>
+<!-- foreground street -->
+<path d="M0 900L510 710h590L1600 900Z" fill="url(#road)"/>
+<path d="M0 900L560 720M1600 900L1040 720" stroke="#00F0FF" stroke-width="5" opacity=".65"/>
+<path d="M800 900L790 720" stroke="#FF0055" stroke-width="5" opacity=".8"/>
+<path d="M0 820L1600 820M250 770L1350 770" stroke="#00F0FF" stroke-opacity=".2"/>
+<path d="M0 900L800 720 1600 900" fill="url(#grid)" opacity=".7"/>
+<!-- rain -->
+<g stroke="#00F0FF" stroke-opacity=".2" stroke-width="2">
+<path d="M0 0l-24 90"/><path d="M137 83l-24 90"/><path d="M274 166l-24 90"/><path d="M411 249l-24 90"/><path d="M548 332l-24 90"/><path d="M685 415l-24 90"/><path d="M822 498l-24 90"/><path d="M959 581l-24 90"/><path d="M1096 664l-24 90"/><path d="M1233 747l-24 90"/><path d="M1370 70l-24 90"/><path d="M1507 153l-24 90"/><path d="M44 236l-24 90"/><path d="M181 319l-24 90"/><path d="M318 402l-24 90"/><path d="M455 485l-24 90"/><path d="M592 568l-24 90"/><path d="M729 651l-24 90"/><path d="M866 734l-24 90"/><path d="M1003 57l-24 90"/><path d="M1140 140l-24 90"/><path d="M1277 223l-24 90"/><path d="M1414 306l-24 90"/><path d="M1551 389l-24 90"/><path d="M88 472l-24 90"/><path d="M225 555l-24 90"/><path d="M362 638l-24 90"/><path d="M499 721l-24 90"/><path d="M636 44l-24 90"/><path d="M773 127l-24 90"/><path d="M910 210l-24 90"/><path d="M1047 293l-24 90"/><path d="M1184 376l-24 90"/><path d="M1321 459l-24 90"/><path d="M1458 542l-24 90"/><path d="M1595 625l-24 90"/><path d="M132 708l-24 90"/><path d="M269 31l-24 90"/><path d="M406 114l-24 90"/><path d="M543 197l-24 90"/><path d="M680 280l-24 90"/><path d="M817 363l-24 90"/><path d="M954 446l-24 90"/><path d="M1091 529l-24 90"/><path d="M1228 612l-24 90"/><path d="M1365 695l-24 90"/><path d="M1502 18l-24 90"/><path d="M39 101l-24 90"/><path d="M176 184l-24 90"/><path d="M313 267l-24 90"/><path d="M450 350l-24 90"/><path d="M587 433l-24 90"/><path d="M724 516l-24 90"/><path d="M861 599l-24 90"/><path d="M998 682l-24 90"/><path d="M1135 5l-24 90"/><path d="M1272 88l-24 90"/><path d="M1409 171l-24 90"/><path d="M1546 254l-24 90"/><path d="M83 337l-24 90"/><path d="M220 420l-24 90"/><path d="M357 503l-24 90"/><path d="M494 586l-24 90"/><path d="M631 669l-24 90"/><path d="M768 752l-24 90"/><path d="M905 75l-24 90"/><path d="M1042 158l-24 90"/><path d="M1179 241l-24 90"/><path d="M1316 324l-24 90"/><path d="M1453 407l-24 90"/>
+</g>
+<rect width="1600" height="900" fill="none" stroke="#00F0FF" stroke-opacity=".16" stroke-width="12"/>
+</svg>
