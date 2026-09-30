@@ -32,7 +32,7 @@ resize(){
 }
 point(n){return new THREE.Vector3(n.x*S,0,n.z*S)}
 dims(n){
- const sizes={hub:[13,11],'grand-hall':[13,11],gallery:[11,9],'dining-hall':[12,10],library:[11,9],study:[9,9],conservatory:[12,10],bedroom:[9,9],service:[9,8],storage:[8,8],security:[10,9],chapel:[12,11],'machine-room':[12,10]};
+ const sizes={hub:[15,13],lobby:[15,13],'grand-hall':[13,11],gallery:[11,9],'dining-hall':[12,10],library:[11,9],study:[9,9],conservatory:[12,10],bedroom:[9,9],service:[9,8],storage:[8,8],security:[10,9],chapel:[12,11],'machine-room':[12,10]};
  const [w,d]=sizes[n.archetype]||sizes[n.type]||[9,9];return {w,d};
 }
 box(g,size,pos,mat,cast=true){const m=new THREE.Mesh(new THREE.BoxGeometry(size.x,size.y,size.z),mat);m.position.copy(pos);m.castShadow=cast&&!this.profile.android;m.receiveShadow=true;g.add(m);return m}
@@ -58,7 +58,7 @@ room(n,p,d,ns,map){
  const g=new THREE.Group();g.position.copy(p);this.box(g,new THREE.Vector3(d.w,.24,d.d),new THREE.Vector3(0,-.12,0),this.m.floor,false);this.box(g,new THREE.Vector3(d.w,.18,d.d),new THREE.Vector3(0,H+.08,0),this.m.ceiling,false);
  const has=(dx,dz)=>ns.some(id=>{const q=map.get(id);return q&&Math.sign(q.x-n.x)===dx&&Math.sign(q.z-n.z)===dz});
  this.wall(g,'x',-d.w/2,d.d,has(-1,0));this.wall(g,'x',d.w/2,d.d,has(1,0));this.wall(g,'z',-d.d/2,d.w,has(0,-1));this.wall(g,'z',d.d/2,d.w,has(0,1));
- const l=new THREE.PointLight(0xffd7aa,n.type==='hub'?5:2.7,n.type==='hub'?18:13,2);l.position.y=3.55;l.castShadow=!this.profile.android;g.add(l);
+ const l=new THREE.PointLight(0xffead0,n.type==='hub'?9:2.7,n.type==='hub'?24:13,2);l.position.y=3.65;l.castShadow=!this.profile.android;g.add(l);if(n.type==='hub'){const fill=new THREE.PointLight(0xfff4dc,4,12,2);fill.position.set(0,2.4,0);g.add(fill)}
  if(n.type==='destination'||n.type==='gallery'||n.archetype==='chapel'){const a=new THREE.PointLight(0xb31926,1.4,8,2);a.position.y=1.7;g.add(a)}
  this.world.add(g);
 }
