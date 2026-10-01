@@ -1,13 +1,14 @@
-const nav=[['sprite-matrix','👾 Sprite Matrix','pages/sprite-matrix.html'],['game-console','🎮 Game Console','pages/game-console.html'],['voice-scripting','🎙️ Voice Scripting','pages/voice-scripting.html'],['database-admin','🗄️ Database & Admin Bridge','pages/database-admin.html'],['dev','🛠️ Dev Page','pages/dev.html'],['sandbox','👁️ Virtual Sandbox','pages/sandbox.html']];
+const nav=[['sprite-matrix','👾 SPRITE MATRIX','pages/sprite-matrix.html'],['game-console','🎮 GAME CONSOLE','pages/game-console.html'],['voice-scripting','🎙️ VOICE SCRIPTING','pages/voice-scripting.html'],['database-admin','🗄️ DATABASE & ADMIN','pages/database-admin.html'],['dev','🛠️ DEV PAGE','pages/dev.html'],['sandbox','👁️ VIRTUAL SANDBOX','pages/sandbox.html']];
 
+function rainMarkup(base){
+  const glyphs=['ᚠ','ᛉ','ᛟ','𓂀','𐌗','7','101','404','☠','👁','ϟ','∴','∆','ᚱ'];
+  return '<div class="pn-code-rain" aria-hidden="true">'+Array.from({length:72},(_,i)=>'<span style="left:'+((i*17)%100)+'%;animation-delay:-'+(i%11)+'s;animation-duration:'+(6+(i%7))+'s">'+glyphs[i%glyphs.length]+' '+glyphs[(i+3)%glyphs.length]+'</span>').join('')+'</div>'+
+  '<div class="pn-jester-rain" aria-hidden="true"><img src="'+base+'assets/characters/nightmare-jester.svg" alt=""><i></i></div>';
+}
 export function renderShell(page){
-  const root=document.querySelector('#app');
-  const base=page==='dashboard'?'':'../';
-  const links=[['dashboard','🏠 DASHBOARD',base+'index.html'],...nav.map(([id,label,url])=>[id,label,base+url])];
-  const atmosphere=page==='dashboard'
-    ? '<div class="dashboard-atmosphere" aria-hidden="true"><div class="atmosphere-noise"></div><div class="atmosphere-vignette"></div></div>'
-    : '<div class="building">'+Array.from({length:180},(_,i)=>'<i class="window '+(i%17===0?'face ':'')+(i%7===0?'light':'')+'"></i>').join('')+'</div><div class="code-rain">'+Array.from({length:56},(_,i)=>'<span class="glyph" style="left:'+((i*37)%100)+'%;animation-duration:'+(5+(i%8))+'s;animation-delay:-'+(i%9)+'s">ᚠ ϟ 𓂀 7 101 ᛉ</span>').join('')+'</div><div class="jester"><img src="'+base+'assets/characters/nightmare-jester.svg" alt=""></div>';
-  root.innerHTML='<main class="nightmare-shell '+(page==='dashboard'?'dashboard-shell':'')+'" data-world="mansion">'+atmosphere+
-    '<header class="nightmare-header"><small>DORE TRADING UK</small><h1>PROJECT NIGHTMARE</h1><p>Brought to you by Seumas Dore &amp; Lewis Dore</p><nav class="nightmare-nav">'+links.map(([id,label,url])=>'<a class="'+(id===page?'active':'')+'" data-system="'+id+'" href="'+url+'">'+label+'</a>').join('')+'</nav></header>'+
-    '<section id="page-root"></section></main>';
+  const root=document.querySelector('#app'),base=page==='dashboard'?'':'../';
+  const links=[['dashboard','⌂ DASHBOARD',base+'index.html'],...nav.map(([id,label,url])=>[id,label,base+url])];
+  root.innerHTML='<main class="nightmare-shell '+(page==='dashboard'?'dashboard-shell':'tool-shell')+'" data-page="'+page+'"><div class="pn-background"></div><div class="pn-background-shade"></div>'+rainMarkup(base)+
+  '<div class="pn-sentinel pn-sentinel-left"><img src="'+base+'assets/props/nightmare-eye.svg" alt=""></div><div class="pn-sentinel pn-sentinel-right"><img src="'+base+'assets/props/nightmare-eye.svg" alt=""></div>'+
+  '<header class="nightmare-header"><div class="pn-brand"><small>DORE TRADING UK // 3D HORROR ENGINE</small><h1>PROJECT NIGHTMARE</h1><p>Brought to you by Seumas Dore &amp; Lewis Dore, all rights reserved by Dore Trading UK</p></div><nav class="nightmare-nav">'+links.map(([id,label,url])=>'<a class="'+(id===page?'active':'')+'" href="'+url+'">'+label+'</a>').join('')+'</nav><label class="pn-background-upload">⛶ UPLOAD BACKGROUND / ANIMATION<input id="backgroundUpload" type="file" accept="image/*,video/*"></label></header><section id="page-root"></section></main>';
 }
