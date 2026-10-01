@@ -978,3 +978,36 @@ The engine now has a genuine navigable 3D procedural environment, but it is stil
 ### Asset storage boundary
 The IndexedDB asset vault remains the local working database. It persists uploaded assets in the user's browser profile and exposes stable IDs/metadata for engine reuse. Cloud/server upload links are intentionally left as the next storage layer rather than pretending the local vault is already shared infrastructure.
 
+
+
+## 2026-10-01 — LOCKED UI / TOOL FOUNDATION BUILD
+
+### Completed
+- Preserved the existing procedural 3D Mansion engine and sandbox bootstrap.
+- Reworked the shared shell around the locked Project Nightmare cinematic retrowave/cyber-horror template.
+- Dashboard now presents six primary tool consoles plus the Virtual Sandbox as Page 7.
+- Added the Dore Trading UK credit line and animated cursor-following sentinel eyes.
+- Added green/red glyph rain and animated Jester overlay above the artwork and below working UI.
+- Added browser-local background image/video upload and persistence.
+- Added production-style Sprite Matrix controls: asset intake, live preview window, grid/transform/layer controls.
+- Added Game Console engine rack: Suemas / Ruby / Lewis selector and port bridge.
+- Added Voice Scripting rack: waveform, audio intake, Kokoro TTS default selector, pitch/speed, playback/record/export controls and text-to-audio area.
+- Added Dev Page authoring controls for page selection, editable text, font, style, background and animation style plus sprite behaviour/logic intake.
+- Added requested project folders/contracts: components, animations, textures, colour-palettes, app and AI prompt documentation.
+- Added data/asset-database-schema.json for the stable asset metadata contract.
+- Created development branches dev/nightmare-ui-foundation and dev/3d-engine-next from current main.
+
+### Honest limitations
+- Browser-local background uploads are persisted in that browser; they do not automatically commit binary artwork into GitHub.
+- The tool consoles are functional UI foundations; real server-side AI generation, cloud asset sync, Kokoro model execution, multiplayer networking and console-to-engine persistence remain engineering stages.
+- GitHub Pages deployment itself could not be visually opened through the available web verifier, so repository source integrity was verified instead.
+- The 3D renderer remains the existing real WebGL/Three.js path; this build does not pretend the visual layer is already AAA finished.
+
+### Next build
+1. Connect Sprite Matrix stable asset IDs to the existing IndexedDB Asset Vault.
+2. Connect Game Console engine selection to actual renderer/runtime profiles.
+3. Connect Voice Scripting to a real Kokoro service/runtime while retaining a browser fallback.
+4. Expand Dev Page persistence from local UI state into versioned project configuration.
+5. Add authored 3D materials, lighting, shadows, props, surveillance hardware and atmosphere to the Mansion.
+6. Finish first-person collision/touch/controller input and Xbox/PlayStation mapping without regressing Android.
+7. Keep the Mansion procedural graph, 8-player architecture and future Carnival event compatibility intact.
