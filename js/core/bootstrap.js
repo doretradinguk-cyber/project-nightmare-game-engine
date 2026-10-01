@@ -1,1 +1,1 @@
-import {renderShell} from '../ui/shell.js';import {renderPage} from '../ui/pages.js';export function boot(){const page=document.body.dataset.page||'dashboard';renderShell(page);renderPage(page)}
+import {renderShell} from '../ui/shell.js';import {renderPage} from '../ui/pages.js';import {mountAtmosphere} from '../ui/atmosphere.js';export function boot(){const page=document.body.dataset.page||'dashboard';renderShell(page);renderPage(page);mountAtmosphere()}
