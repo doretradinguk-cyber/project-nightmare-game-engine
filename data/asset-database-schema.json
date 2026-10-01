@@ -1,0 +1,29 @@
+{
+  "version": 1,
+  "assetTypes": [
+    "sprite",
+    "animation",
+    "audio",
+    "text",
+    "json",
+    "background",
+    "texture",
+    "model",
+    "prompt",
+    "screenshot",
+    "build-note"
+  ],
+  "metadata": [
+    "id",
+    "name",
+    "type",
+    "tags",
+    "description",
+    "source",
+    "license",
+    "enginePath",
+    "version",
+    "createdAt",
+    "updatedAt"
+  ]
+}
