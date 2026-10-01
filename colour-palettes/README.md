@@ -1,0 +1,2 @@
+# Project Nightmare colour palettes
+Core palette: VOID #0B0C10, SLATE #1F2833, DECAY #2C3531, OLIVE #4E5D4C, GLITCH #FF0055 / #00F0FF, HORIZON #8B00FF / #FF5500.
